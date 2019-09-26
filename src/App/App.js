@@ -44,7 +44,10 @@ const DoAfterTransition = hoc((configHoc, Wrapped) => {
 		}
 
 		handleShow = () => this.setState({shown: true});
-		handleHide = () => this.setState({shown: false});
+		handleHide = () => {
+			this.setState({shown: false});
+			window.close();
+		}
 
 		render () {
 			return (
@@ -151,6 +154,12 @@ const AppDecorator = compose(
 	}),
 	ConsumerDecorator({
 		mount: (props, {update}) => {
+			setTimeout(() => {
+				update(state => {
+					state.app.launcherShowing = true;
+				});
+			}, 0);
+
 			// add a key handler to toggle launcher
 			const onKeyUp = ({keyCode}) => {
 				if (keyCode === 48) { // 0

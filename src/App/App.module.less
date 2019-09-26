@@ -1,0 +1,51 @@
+@import "~@enact/agate/styles/mixins.less";
+
+.enact-fit {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.app {
+	&.withBackground {
+		background-image: linear-gradient(to bottom right, lighten(red, 20%), lighten(blue, 20%));
+	}
+
+	.transition {
+		pointer-events: none;
+
+		.inner > * {
+			pointer-events: auto;
+		}
+	}
+
+	.controls {
+		padding: 70px;
+	}
+
+	.basement {
+		position: absolute;
+		.position(0);
+		background-image: linear-gradient(to bottom, fade(black, 70%), fade(black, 15%) 70%);
+	}
+
+	.quickSettingsTransition,
+	.launcherTransition {
+		&,
+		.inner {
+			.enact-fit();
+		}
+	}
+
+	.quickSettingsTransition {
+		right: auto;
+		width: 400px;
+	}
+
+	.launcherTransition {
+		top: auto;
+		height: 399px;
+	}
+}

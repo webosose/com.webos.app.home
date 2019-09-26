@@ -1,0 +1,28 @@
+// Launcher.module.less
+//
+
+@import "../styles/variables.less";
+
+.launcher {
+	height: (@home-launcher-tile-height + @home-launcher-tile-focus-offset);
+
+	.appsScroller {
+		position: absolute;
+		bottom: 0;
+		height: (@home-launcher-tile-height + @home-launcher-tile-focus-offset);
+	}
+
+	.appsList {
+		white-space: nowrap;
+		width: fit-content;
+		min-width: 100%;
+	}
+
+	&.ready {
+		.appsScroller {
+			&::before {
+				opacity: 1;
+			}
+		}
+	}
+}

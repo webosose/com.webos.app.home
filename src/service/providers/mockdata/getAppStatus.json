@@ -1,0 +1,9 @@
+{
+	"event": "nothing",
+	"subscribed": true,
+	"appId": "com.webos.app.enactsampler",
+	"exist": true,
+	"launchable": true,
+	"status": "launchable",
+	"returnValue": true
+}

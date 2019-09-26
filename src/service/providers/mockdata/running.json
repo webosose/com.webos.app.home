@@ -1,0 +1,12 @@
+{
+	"running": [
+		{
+			"id": "com.webos.app.enactsampler",
+			"webprocessid": "1428",
+			"defaultWindowType": "card",
+			"appType": "web",
+			"processid": "1428"
+		}
+	],
+	"returnValue": true
+}

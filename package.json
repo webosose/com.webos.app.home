@@ -1,0 +1,53 @@
+{
+	"name": "com.webos.app.home",
+	"version": "0.1.0",
+	"description": "webOS Home Application",
+	"author": "LG SVL",
+	"main": "src/index.js",
+	"scripts": {
+		"serve": "nodemon --watch .env --exec \"enact serve\"",
+		"serve-mock": "cross-env REACT_APP_SERVICE_PROVIDER=Mock npm run serve",
+		"serve-luna": "cross-env REACT_APP_SERVICE_PROVIDER=Luna npm run serve",
+		"pack": "enact pack",
+		"pack-p": "enact pack -p",
+		"watch": "enact pack --watch",
+		"clean": "enact clean",
+		"lint": "enact lint .",
+		"license": "enact license",
+		"test": "enact test",
+		"test-watch": "enact test --watch"
+	},
+	"license": "Apache-2.0",
+	"private": true,
+	"repository": "https://github.com/enyojs/webos-auto-home.git",
+	"enact": {
+		"theme": "agate"
+	},
+	"eslintConfig": {
+		"extends": "enact/strict"
+	},
+	"eslintIgnore": [
+		"node_modules/*",
+		"build/*",
+		"dist/*"
+	],
+	"dependencies": {
+		"@enact/agate": "enactjs/agate#1.0.0-alpha.1",
+		"@enact/core": "^3.0.0",
+		"@enact/i18n": "^3.0.0",
+		"@enact/spotlight": "^3.0.0",
+		"@enact/ui": "^3.0.0",
+		"@enact/webos": "^3.0.0",
+		"ilib": "^14.3.0",
+		"immer": "^3.2.0",
+		"prop-types": "^15.6.2",
+		"query-string": "^6.8.3",
+		"ramda": "^0.26.1",
+		"react": "^16.8.0",
+		"react-dom": "^16.8.0"
+	},
+	"devDependencies": {
+		"cross-env": "^5.2.0",
+		"nodemon": "^1.18.10"
+	}
+}

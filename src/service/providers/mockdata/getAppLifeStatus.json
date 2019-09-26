@@ -1,0 +1,11 @@
+{
+	"appId": "bareapp",
+	"status": "launching",
+	"extraInfo": {
+		"title": "Bare App",
+		"noSplash": false,
+		"splashBackground": "",
+		"spinner": true
+	},
+	"type": "web"
+}

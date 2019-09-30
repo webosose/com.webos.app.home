@@ -12,8 +12,13 @@ import qs from 'query-string';
  * Get all URL parameters from the QUERY_STRING. Optionally, specify a specific parameter to return just that one.
  */
 const getQueryStringParams = (param) => {
-	const params = qs.parse(window.location.search);
-	return param ? params[param] : params;
+	if (typeof window !== 'undefined') {
+		const params = qs.parse(window.location.search);
+		return param ? params[param] : params;
+	}
+	else {
+		return;
+	}
 };
 
 /*
@@ -29,7 +34,10 @@ const setQueryStringParams = (obj) => {
 	let stringified = qs.stringify(allParams);
 	// Un-encode some special characters
 	stringified = stringified.replace(/%2F/g, '/');  // Keep slashes pretty
-	window.history.replaceState(obj, '', (stringified ? `?${stringified}` : ''));
+	if (typeof window !== 'undefined') {
+		window.history.replaceState(obj, '', (stringified ? `?${stringified}` : ''));
+	}
+
 	return allParams;
 };
 

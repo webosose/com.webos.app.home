@@ -46,7 +46,9 @@ const DoAfterTransition = hoc((configHoc, Wrapped) => {
 		handleShow = () => this.setState({shown: true});
 		handleHide = () => {
 			this.setState({shown: false});
-			window.close();
+            if (typeof window !== 'undefined') {
+                window.close();
+            }
 		}
 
 		render () {

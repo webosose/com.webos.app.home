@@ -171,6 +171,11 @@ const AppDecorator = compose(
 			};
 
 			document.addEventListener('keyup', onKeyUp);
+			document.addEventListener('webOSRelaunch', (data)=>{
+				update(state => {
+					state.app.launcherShowing = true;
+				});
+			});
 			// Simulate a slow luna call
 			// Remove the setTimeout to run at normal speed
 			setTimeout(() => {
@@ -188,6 +193,7 @@ const AppDecorator = compose(
 			return () => {
 				document.removeEventListener('keyup', onKeyUp);
 
+				// set default status
 				update(state => {
 					state.launcher.launchPoints = [];
 				});

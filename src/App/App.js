@@ -9,6 +9,7 @@ import IconButton from '@enact/agate/IconButton';
 import kind from '@enact/core/kind';
 import platform from '@enact/core/platform';
 import PopupMenu from '@enact/agate/PopupMenu';
+import PropTypes from 'prop-types';
 import ProviderDecorator from '@enact/agate/data/ProviderDecorator';
 import React from 'react';
 import Transition from '@enact/ui/Transition';
@@ -70,10 +71,33 @@ const AnimationReadyLauncher = ({animationReady, onLaunchApp, spotlightDisabled,
 	</Transition>
 );
 
+AnimationReadyLauncher.propTypes = {
+	animationReady: PropTypes.bool,
+	onLaunchApp: PropTypes.func,
+	spotlightDisabled: PropTypes.bool
+};
+
+
 const AnimatedLauncher = DoAfterTransition(AnimationReadyLauncher);
 
 const AppBase = kind({
 	name: 'App',
+
+	propTypes: {
+		bluetoothShowing: PropTypes.bool,
+		displaySharingShowing: PropTypes.bool,
+		launcherShowing: PropTypes.bool,
+		onActivateBluetooth: PropTypes.func,
+		onActivateDisplaySharing: PropTypes.func,
+		onActivateLauncher: PropTypes.func,
+		onActivateProfiles: PropTypes.func,
+		onHideEverything: PropTypes.func,
+		onHidePopups: PropTypes.func,
+		onLaunchApp: PropTypes.func,
+		onLaunchSettings: PropTypes.func,
+		onNavigate: PropTypes.func,
+		profilesShowing: PropTypes.bool
+	},
 
 	styles: {
 		css,
@@ -195,7 +219,6 @@ const AppDecorator = compose(
 			return () => {
 				document.removeEventListener('keyup', onKeyUp);
 
-				// set default status
 				update(state => {
 					state.launcher.launchPoints = [];
 				});

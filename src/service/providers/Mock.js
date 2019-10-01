@@ -18,7 +18,7 @@ const mock = action => ({onComplete = noop, onSuccess = noop, subscribe = false}
 				id = setInterval(() => {
 					onSuccess(res);
 					onComplete(res);
-				}, Math.random()*5000 + 2000);
+				}, Math.random() * 5000 + 2000);
 			}
 			onSuccess(res);
 			onComplete(res);

@@ -16,7 +16,7 @@ const luna = (
 		method,
 		{subscribe = false, timeout = 0, ...params} = {},
 		map
-	) => (
+) => (
 	({onSuccess, onFailure, onTimeout, onComplete, ...additionalParams} = {}) => {
 		const req = new LS2Request();
 		req.send({

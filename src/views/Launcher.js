@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import kind from '@enact/core/kind';
 import Scroller from '@enact/agate/Scroller';
-import SpotlightContainerDecorator from '@enact/spotlight/SpotlightContainerDecorator';
 import ConsumerDecorator from '@enact/agate/data/ConsumerDecorator';
 
 import iconHomeLauncher from '../../assets/home-launcher-icon.svg';
@@ -30,7 +29,9 @@ const LauncherBase = kind({
 
 	propTypes: {
 		appsList: PropTypes.array,
-		onLaunchApp: PropTypes.func
+		onLaunchApp: PropTypes.func,
+		ready: PropTypes.bool,
+		spotlightDisabled: PropTypes.bool
 	},
 
 	styles: {
@@ -65,7 +66,7 @@ const LauncherBase = kind({
 		}
 	},
 
-	render: ({appsList, renderItem, ...rest}) => {
+	render: ({appsList, renderItem, spotlightDisabled, ...rest}) => {
 		delete rest.onLaunchApp;
 		delete rest.ready;
 		return (
@@ -74,6 +75,7 @@ const LauncherBase = kind({
 					className={css.appsScroller}
 					direction="horizontal"
 					horizontalScrollbar="hidden"
+					spotlightDisabled={spotlightDisabled}
 				>
 					<div className={css.appsList}>
 						{appsList.map(renderItem)}
@@ -90,9 +92,7 @@ const Launcher = ConsumerDecorator(
 			appsList: state => staticLaunchPoints.concat(state.launcher.launchPoints)
 		}
 	},
-	SpotlightContainerDecorator(
-		LauncherBase
-	)
+	LauncherBase
 );
 
 

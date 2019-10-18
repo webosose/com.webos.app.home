@@ -228,8 +228,6 @@ const AppDecorator = compose(
 			let serviceConnected = false;
 
 			let listLaunchPoints = () => {
-				console.log('setInterval');
-
 				!serviceConnected && service.listLaunchPoints({
 					subscribe: true,
 					onSuccess: (res) => {

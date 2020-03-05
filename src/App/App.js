@@ -238,24 +238,26 @@ const AppDecorator = compose(
 							update(state => {
 								state.launcher.launchPoints = res.launchPoints; //.filter(i => appGroupList[displayAffinity].indexOf(i.id) >= 0);
 							});
-						} else {
-							if (res.change === 'removed') {
+						} else if(res.launchPoint){
+							let updateInfo = res.launchPoint;
+							let changeInfo = res.change;
+							if (changeInfo === 'removed') {
 								update(state => {
 									state.launcher.launchPoints = state.launcher.launchPoints.filter(
-										info => info.id !== res.id
+										info => info.id !== updateInfo.id
 									)
 								})
-							} else if (res.change === 'added') {
+							} else if (changeInfo === 'added') {
 								update(state => {
 									state.launcher.launchPoints = state.launcher.launchPoints.concat({
-										...res
+										...updateInfo
 									})
 								})
 							} else {
 								update(state => {
 									state.launcher.launchPoints = state.launcher.launchPoints.map(
-										info => info.id === res.id
-											? { ...info, ...res }
+										info => info.id === updateInfo.id
+											? { ...info, ...updateInfo}
 											: info
 									)
 								});

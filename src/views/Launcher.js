@@ -43,7 +43,7 @@ const LauncherBase = kind({
 		className: ({ready, styler}) => styler.append({ready}),
 		// eslint-disable-next-line enact/display-name
 		renderItem: ({onLaunchApp}) => (app, index) => {
-			const {title, iconColor: color, id, progress, notification} = app;
+			const {title, iconColor: color, id, launchPointId, progress, notification} = app;
 			let icon = app.icon;
 			if (icon && icon.indexOf(':') === -1 && icon.indexOf('/') === 0) {
 				// Icon doesn't contain a protocol separator (:) so it's looking for local files.
@@ -51,6 +51,7 @@ const LauncherBase = kind({
 			}
 			const tileProps = {
 				appid: id,
+				launchPointId,
 				color,
 				icon,
 				key: `app-${id}`,

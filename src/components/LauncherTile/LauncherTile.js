@@ -50,7 +50,7 @@ const LauncherTileBase = kind({
 		onClick: handle(
 			forward('onClick'),
 			adaptEvent(
-				(ev, {appid}) => ({appid}),
+				(ev, { launchPointId, appid, title, ipkUrl, notification }) => ({ launchPointId, appid, title, ipkUrl, notification }),
 				forward('onLaunchApp')
 			)
 		)

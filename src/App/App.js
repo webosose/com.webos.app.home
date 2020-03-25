@@ -321,15 +321,21 @@ const AppDecorator = compose(
 					state.app.overlays.profiles = true;
 				});
 			},
-			onLaunchApp: ({ appid: id }) => {
-				// displayAffinity = JSON.parse(window.PalmSystem.launchParams).displayAffinity;
+			onLaunchApp: ({ launchPointId, appid }) => {
+				displayAffinity = JSON.parse(window.PalmSystem.launchParams).displayAffinity;
 				console.log('onLaunchApp');
-				service.launch({
-					id: id, params: {
-						displayAffinity:
-							JSON.parse(window.PalmSystem.launchParams).displayAffinity
-					}
-				});
+				if(launchPointId) {
+					console.log("Launch with launchPointId: ", launchPointId);
+					service.launch({
+						launchPointId:launchPointId, params: { displayAffinity }
+					});
+				}
+				else {
+					console.log("Launch with appId: ", appid);
+					service.launch({
+						id:appid, params: { displayAffinity }
+					});
+				}
 				return true;
 			}
 			// DEV NOTE: Retaining for example purposes

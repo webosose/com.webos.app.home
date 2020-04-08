@@ -35,6 +35,7 @@
 
 		.bg,
 		.notification,
+		.badgeBg,
 		.iconCell {
 			transition: 300ms transform cubic-bezier(.3,0,.3,1);
 			will-change: transform;
@@ -71,6 +72,26 @@
 				transition: 200ms transform ease-out;
 				will-change: transform;
 			}
+		}
+
+		.badgeIcon {
+			width: 42px;
+			height: 42px;
+		}
+		.badgeBg {
+			@badge-offset: .slant-offset(@home-launcher-tile-height)[@width] - 168px;
+
+			position: absolute;
+			top: 12px;
+			right: -@badge-offset;
+			color: white;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			box-sizing: border-box;
+			max-width: ~"calc(100% - " @badge-offset ~")";
+			width: 42px;
+			height: 42px;
+			text-align: center;
 		}
 
 		.notification {
@@ -139,6 +160,7 @@
 			transform: skew(-@home-launcher-tile-slant) translateY(-@home-launcher-tile-focus-offset);
 		}
 		.notification,
+		.badgeBg,
 		.iconCell {
 			transform: translate(.slant-offset(@home-launcher-tile-focus-offset)[@width], -@home-launcher-tile-focus-offset);
 		}

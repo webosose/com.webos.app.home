@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import Skinnable from '@enact/agate/Skinnable';
 
 import css from './LauncherTile.module.less';
+import bookmarkIcon from '../../../assets/home-app-launcher-icon-bookmark-01.svg';
 
 // Originally by: Barak on Jan 12 '12 at 8:22
 // https://stackoverflow.com/a/8831937/388092
@@ -75,7 +76,7 @@ const LauncherTileBase = kind({
 		}
 	},
 
-	render: ({children, icon, notification, ...rest}) => {
+	render: ({children, icon, notification, lptype, ...rest}) => {
 		delete rest.first;
 		delete rest.color;
 		delete rest.onLaunchApp;
@@ -84,6 +85,11 @@ const LauncherTileBase = kind({
 			<div {...rest}>
 				<Column className={css.content} align="center center">
 					<div className={css.bg} />
+					{lptype === 'bookmark' &&
+						<div className={css.badgeBg} align="center">
+							<Image className={css.badgeIcon} src={bookmarkIcon} />
+						</div>
+					}
 					<div className={css.notification}>{notification}</div>
 					<Cell className={css.iconCell} shrink>
 						<Image className={css.icon} src={icon} />

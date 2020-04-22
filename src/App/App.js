@@ -18,6 +18,11 @@ import service from '../service';
 import Controls from '../views/Controls';
 import Launcher from '../views/Launcher';
 import { getQueryStringParams } from '../components/util';
+import RemovePopupMenu from '../components/RemovePopupMenu';
+import {
+	getOverlayRemove,
+	getRemoveTargetAppInfo
+} from '../state/app';
 
 import initialState from './initialState';
 
@@ -105,6 +110,7 @@ const AppBase = kind({
 	name: 'App',
 
 	propTypes: {
+		removeShowing: PropTypes.bool,
 		bluetoothShowing: PropTypes.bool,
 		displaySharingShowing: PropTypes.bool,
 		launcherShowing: PropTypes.bool,
@@ -117,7 +123,8 @@ const AppBase = kind({
 		onLaunchApp: PropTypes.func,
 		onLaunchSettings: PropTypes.func,
 		onNavigate: PropTypes.func,
-		profilesShowing: PropTypes.bool
+		profilesShowing: PropTypes.bool,
+		removeTargetAppInfo: PropTypes.object
 	},
 
 	styles: {
@@ -155,6 +162,8 @@ const AppBase = kind({
 		onLaunchApp,
 		onLaunchSettings,
 		profilesShowing,
+		removeShowing,
+		removeTargetAppInfo,
 		...rest
 	}) => {
 		delete rest.onActivateLauncher;
@@ -189,6 +198,7 @@ const AppBase = kind({
 					<IconButton size="huge" backgroundOpacity="lightOpaque">profileA3</IconButton>
 					<IconButton size="huge" backgroundOpacity="lightOpaque">profileA4</IconButton>
 				</PopupMenu>
+				<RemovePopupMenu open={removeShowing} onClose={onHidePopups} targetInfo={removeTargetAppInfo} />
 			</div>
 		);
 	}
@@ -349,7 +359,9 @@ const AppDecorator = compose(
 			launcherShowing: app.launcherShowing,
 			bluetoothShowing: app.overlays.bluetooth,
 			displaySharingShowing: app.overlays.displaySharing,
-			profilesShowing: app.overlays.profiles
+			profilesShowing: app.overlays.profiles,
+			removeShowing: getOverlayRemove,
+			removeTargetAppInfo: getRemoveTargetAppInfo
 		})
 	})
 );

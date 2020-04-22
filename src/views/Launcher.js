@@ -8,6 +8,11 @@ import iconHomeLauncher from '../../assets/home-launcher-icon.svg';
 
 import LauncherTile from '../components/LauncherTile';
 
+import {
+	setRemoveTargetAppInfo,
+	enableOverlayRemove,
+} from '../state/app';
+
 import css from './Launcher.module.less';
 
 // Examples of appData usage:
@@ -31,7 +36,9 @@ const LauncherBase = kind({
 		appsList: PropTypes.array,
 		onLaunchApp: PropTypes.func,
 		ready: PropTypes.bool,
-		spotlightDisabled: PropTypes.bool
+		spotlightDisabled: PropTypes.bool,
+		setDeletePopupTimer: PropTypes.func,
+		clearDeletePopupTimer: PropTypes.func
 	},
 
 	styles: {
@@ -42,7 +49,7 @@ const LauncherBase = kind({
 	computed: {
 		className: ({ready, styler}) => styler.append({ready}),
 		// eslint-disable-next-line enact/display-name
-		renderItem: ({onLaunchApp}) => (app, index) => {
+		renderItem: ({onLaunchApp, setDeletePopupTimer, clearDeletePopupTimer}) => (app, index) => {
 			const {title, iconColor: color, id, launchPointId, progress, notification, lptype} = app;
 			let icon = app.icon;
 			if (icon && icon.indexOf(':') === -1 && icon.indexOf('/') === 0) {
@@ -51,15 +58,17 @@ const LauncherBase = kind({
 			}
 			const tileProps = {
 				appid: id,
-				launchPointId,
+				lpid: launchPointId,
+				lptype,
 				color,
 				icon,
-				key: `app-${id}`,
+				key: `app-${launchPointId}`,
 				notification,
 				onLaunchApp,
+				setDeletePopupTimer,
+				clearDeletePopupTimer,
 				title,
-				progress,
-				lptype
+				progress
 			};
 			return (
 				<LauncherTile {...tileProps} first={index === 0}>
@@ -71,6 +80,8 @@ const LauncherBase = kind({
 
 	render: ({appsList, renderItem, spotlightDisabled, ...rest}) => {
 		delete rest.onLaunchApp;
+		delete rest.setDeletePopupTimer;
+		delete rest.clearDeletePopupTimer;
 		delete rest.ready;
 		return (
 			<div {...rest}>
@@ -89,8 +100,30 @@ const LauncherBase = kind({
 	}
 });
 
+let deletePopupTimerId = 0;
+
 const Launcher = ConsumerDecorator(
 	{
+		handlers: {
+			setDeletePopupTimer: (ev, props, context) => {
+				console.log('setDeletePopupTimer');
+				console.log(ev);
+				const {update} = context;
+				if (deletePopupTimerId) {
+					clearTimeout(deletePopupTimerId);
+				}
+				deletePopupTimerId = setTimeout(() => {
+					update(setRemoveTargetAppInfo(ev));
+					update(enableOverlayRemove);
+				}, 1000);
+			},
+			clearDeletePopupTimer: () => {
+				if (deletePopupTimerId) {
+					console.log('clearDeletePopupTimer');
+					clearTimeout(deletePopupTimerId);
+				}
+			}
+		},
 		mapStateToProps: {
 			appsList: state => staticLaunchPoints.concat(state.launcher.launchPoints)
 		}

@@ -1,12 +1,11 @@
 import kind from '@enact/core/kind';
-import {adaptEvent, forward, handle} from '@enact/core/handle';
+import { adaptEvent, forward, handle, forProp, oneOf, log } from '@enact/core/handle';
 import Image from '@enact/agate/Image';
 import {Column, Cell} from '@enact/ui/Layout';
 import Spottable from '@enact/spotlight/Spottable';
+import Skinnable from '@enact/agate/Skinnable';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Skinnable from '@enact/agate/Skinnable';
-
 import css from './LauncherTile.module.less';
 import bookmarkIcon from '../../../assets/home-app-launcher-icon-bookmark-01.svg';
 
@@ -35,7 +34,10 @@ const LauncherTileBase = kind({
 		icon: PropTypes.string,
 		notification: PropTypes.string,
 		onLaunchApp: PropTypes.func,
-		progress: PropTypes.number	// Between zero and one (0 -> 1)
+		progress: PropTypes.number, 	// Between zero and one (0 -> 1)
+		setDeletePopupTimer: PropTypes.func,
+		clearDeletePopupTimer: PropTypes.func,
+		lptype: PropTypes.string
 	},
 
 	defaultProps: {
@@ -51,9 +53,22 @@ const LauncherTileBase = kind({
 		onClick: handle(
 			forward('onClick'),
 			adaptEvent(
-				(ev, { launchPointId, appid, title, ipkUrl, notification }) => ({ launchPointId, appid, title, ipkUrl, notification }),
+				(ev, { lpid, appid, title, ipkUrl, notification }) => ({ launchPointId: lpid, appid, title, ipkUrl, notification }),
 				forward('onLaunchApp')
 			)
+		),
+		onTouchStart: oneOf(
+			[forProp('lptype', 'bookmark'), adaptEvent(
+				(ev, {lpid, lptype, title}) => ({id: lpid, lptype, title}),
+				forward('setDeletePopupTimer')
+			)],
+			[forProp('lptype', 'default'), handle(log('ToDo:: set timer for remove app'))]
+		),
+		onTouchEnd: handle(
+			forward('clearDeletePopupTimer')
+		),
+		onTouchMove: handle(
+			forward('clearDeletePopupTimer')
 		)
 	},
 
@@ -76,13 +91,29 @@ const LauncherTileBase = kind({
 		}
 	},
 
-	render: ({children, icon, notification, lptype, ...rest}) => {
+	render: ({
+		children,
+		icon,
+		notification,
+		lptype,
+		onTouchStart,
+		onTouchMove,
+		onTouchEnd,
+		...rest
+	}) => {
+
 		delete rest.first;
 		delete rest.color;
 		delete rest.onLaunchApp;
+		delete rest.setDeletePopupTimer;
+		delete rest.clearDeletePopupTimer;
 		delete rest.progress;
 		return (
-			<div {...rest}>
+			<div {...rest}
+				onTouchStart={onTouchStart}
+				onTouchEnd={onTouchEnd}
+				onTouchMove={onTouchMove}
+				>
 				<Column className={css.content} align="center center">
 					<div className={css.bg} />
 					{lptype === 'bookmark' &&

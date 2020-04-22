@@ -9,6 +9,7 @@ export default ({launcher} = {}) => ({
 		overlays: {
 			bluetooth: false,
 			displaySharing: false,
+			remove: false,
 			profiles: false
 		}
 	}

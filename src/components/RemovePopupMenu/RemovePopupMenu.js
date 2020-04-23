@@ -75,18 +75,27 @@ const RemovePopupMenuDecorator = compose(
 				console.log('onRemoveApp', ev);
 				const {id, lptype} = ev;
 				if (lptype !== 'bookmark') {
-					return;
+					service.removeApp({
+						id,
+						onSuccess: (res) => {
+							console.log('removeApp - onSuccess :', res);
+						},
+						onFailure: (err) => {
+							console.warn(err);
+						}
+					});
+				} else {
+					service.removeLaunchPoint({
+						launchPointId : id,
+						onSuccess: () => {
+							console.log('removeLaunchPoint - onSuccess :', id);
+						},
+						onFailure: (err) => {
+							console.warn(err);
+						}
+					});
 				}
 
-				service.removeLaunchPoint({
-					launchPointId : id,
-					onSuccess: () => {
-						console.log('removeLaunchPoint - onSuccess :', id);
-					},
-					onFailure: (err) => {
-						console.warn(err);
-					}
-				});
 				console.log('disableAllOverlays');
 				update(disableAllOverlays);
 			}

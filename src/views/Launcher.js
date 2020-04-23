@@ -50,7 +50,7 @@ const LauncherBase = kind({
 		className: ({ready, styler}) => styler.append({ready}),
 		// eslint-disable-next-line enact/display-name
 		renderItem: ({onLaunchApp, setDeletePopupTimer, clearDeletePopupTimer}) => (app, index) => {
-			const {title, iconColor: color, id, launchPointId, progress, notification, lptype} = app;
+			const {title, iconColor: color, id, launchPointId, progress, notification, lptype, systemApp} = app;
 			let icon = app.icon;
 			if (icon && icon.indexOf(':') === -1 && icon.indexOf('/') === 0) {
 				// Icon doesn't contain a protocol separator (:) so it's looking for local files.
@@ -68,7 +68,8 @@ const LauncherBase = kind({
 				setDeletePopupTimer,
 				clearDeletePopupTimer,
 				title,
-				progress
+				progress,
+				systemapp: systemApp
 			};
 			return (
 				<LauncherTile {...tileProps} first={index === 0}>

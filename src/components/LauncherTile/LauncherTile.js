@@ -1,5 +1,5 @@
 import kind from '@enact/core/kind';
-import { adaptEvent, forward, handle, forProp, oneOf, log } from '@enact/core/handle';
+import { adaptEvent, forward, handle, forProp, oneOf } from '@enact/core/handle';
 import Image from '@enact/agate/Image';
 import {Column, Cell} from '@enact/ui/Layout';
 import Spottable from '@enact/spotlight/Spottable';
@@ -37,7 +37,8 @@ const LauncherTileBase = kind({
 		progress: PropTypes.number, 	// Between zero and one (0 -> 1)
 		setDeletePopupTimer: PropTypes.func,
 		clearDeletePopupTimer: PropTypes.func,
-		lptype: PropTypes.string
+		lptype: PropTypes.string,
+		systemapp: PropTypes.bool
 	},
 
 	defaultProps: {
@@ -62,7 +63,19 @@ const LauncherTileBase = kind({
 				(ev, {lpid, lptype, title}) => ({id: lpid, lptype, title}),
 				forward('setDeletePopupTimer')
 			)],
-			[forProp('lptype', 'default'), handle(log('ToDo:: set timer for remove app'))]
+			[forProp('lptype', 'default'),
+				// oneOf(
+				// 	[forProp('systemapp', false), handle(log('ToDo:: set timer for remove installed app'))],
+				// 	[forProp('systemapp', true), handle(log('ToDo:: set timer for remove system app'))],
+				// )
+				handle(
+					forProp('systemapp', false),
+					adaptEvent(
+						(ev, {appid, lptype, title}) => ({id: appid, lptype, title}),
+						forward('setDeletePopupTimer')
+					)
+				)
+			]
 		),
 		onTouchEnd: handle(
 			forward('clearDeletePopupTimer')
@@ -108,6 +121,7 @@ const LauncherTileBase = kind({
 		delete rest.setDeletePopupTimer;
 		delete rest.clearDeletePopupTimer;
 		delete rest.progress;
+		delete rest.systemapp;
 		return (
 			<div {...rest}
 				onTouchStart={onTouchStart}

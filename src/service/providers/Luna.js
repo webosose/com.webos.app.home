@@ -13,6 +13,7 @@ const handler = (callback, map = fwd) => callback && (res => {
 });
 
 const luna = (
+		service,
 		method,
 		{subscribe = false, timeout = 0, ...params} = {},
 		map
@@ -20,7 +21,7 @@ const luna = (
 	({onSuccess, onFailure, onTimeout, onComplete, ...additionalParams} = {}) => {
 		const req = new LS2Request();
 		req.send({
-			service: 'luna://com.webos.service.applicationmanager',
+			service: 'luna://' + service,
 			method,
 			parameters: Object.assign({}, params, additionalParams),
 			onSuccess: handler(onSuccess, map),
@@ -34,33 +35,32 @@ const luna = (
 	}
 );
 
-// For full spec and accepted options, see:
-// https://wiki.lgsvl.com/display/webOSDocs/com.webos.service.applicationmanager+v4.1
 const LunaProvider = {
+	removeApp: luna('com.webos.appInstallService', 'remove'),
 	// Launch Point
-	addLaunchPoint: luna('addLaunchPoint'),
-	moveLaunchPoint: luna('moveLaunchPoint'),
-	updateLaunchPoint: luna('updateLaunchPoint'),
-	removeLaunchPoint: luna('removeLaunchPoint'),
-	listLaunchPoints: luna('listLaunchPoints'), // subscribable
+	addLaunchPoint: luna('com.webos.service.applicationmanager', 'addLaunchPoint'),
+	moveLaunchPoint: luna('com.webos.service.applicationmanager', 'moveLaunchPoint'),
+	updateLaunchPoint: luna('com.webos.service.applicationmanager', 'updateLaunchPoint'),
+	removeLaunchPoint: luna('com.webos.service.applicationmanager', 'removeLaunchPoint'),
+	listLaunchPoints: luna('com.webos.service.applicationmanager', 'listLaunchPoints'), // subscribable
 
 	// Application
-	listApps: luna('listApps'), // subscribable
-	running: luna('running'), // subscribable,
-	getForegroundAppInfo: luna('getForegroundAppInfo'),  // subscribable
-	setOrder: luna('setOrder'),
+	listApps: luna('com.webos.service.applicationmanager', 'listApps'), // subscribable
+	running: luna('com.webos.service.applicationmanager', 'running'), // subscribable,
+	getForegroundAppInfo: luna('com.webos.service.applicationmanager', 'getForegroundAppInfo'),  // subscribable
+	setOrder: luna('com.webos.service.applicationmanager', 'setOrder'),
 
 	// Application Handling
-	launch: luna('launch'),
-	pause: luna('pause'),
-	close: luna('close'),
-	closeByAppId: luna('closeByAppId'),
+	launch: luna('com.webos.service.applicationmanager', 'launch'),
+	pause: luna('com.webos.service.applicationmanager', 'pause'),
+	close: luna('com.webos.service.applicationmanager', 'close'),
+	closeByAppId: luna('com.webos.service.applicationmanager', 'closeByAppId'),
 
 	// Application Specific
-	getAppInfo: luna('getAppInfo'),
-	getAppLifeStatus: luna('getAppLifeStatus'),  // subscribable
-	getAppLifeEvents: luna('getAppLifeEvents'), // subscribable
-	getAppStatus: luna('getAppStatus') // subscribable
+	getAppInfo: luna('com.webos.service.applicationmanager', 'getAppInfo'),
+	getAppLifeStatus: luna('com.webos.service.applicationmanager', 'getAppLifeStatus'),  // subscribable
+	getAppLifeEvents: luna('com.webos.service.applicationmanager', 'getAppLifeEvents'), // subscribable
+	getAppStatus: luna('com.webos.service.applicationmanager', 'getAppStatus') // subscribable
 };
 
 export default LunaProvider;

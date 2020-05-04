@@ -14,6 +14,7 @@ import {
 import css from './RemovePopupMenu.module.less';
 import handle, { adaptEvent, forward } from '@enact/core/handle/handle';
 import service from '../../service';
+import removeIcon from '../../../assets/home-menu-popup-icon-nor-uninstall.svg';
 
 const SharedIconButtonProps = { backgroundOpacity: 'lightOpaque', inline: true, size: 'huge' };
 
@@ -21,7 +22,8 @@ const RemovePopupMenuBase = kind({
 	name: 'RemovePopupMenu',
 
 	propTypes: {
-		targetInfo: PropTypes.object
+		targetInfo: PropTypes.object,
+		onClose: PropTypes.func
 	},
 
 	styles: {
@@ -56,9 +58,14 @@ const RemovePopupMenuBase = kind({
 
 		return (
 			<PopupMenu skinVariants="night" {...rest} title={title} closeButton>
+				{/* <IconButton style={{backgroundSize: ri.unit(ri.scale(250), 'rem')}} backgroundOpacity="lightOpaque" size="huge">{removeIcon}</IconButton> */}
+				{/* <IconButton css={css} className={css.removeButton} backgroundOpacity="lightOpaque" size="huge">{removeIcon}</IconButton> */}
+				{/* <Button size="huge" backgroundOpacity="lightOpaque" style={{backgroundSize: ri.unit(ri.scale(250), 'rem')}} onClick={onHandleClick} icon={removeIcon} /> */}
+				{/* <IconButton css={css} className={css.removeButton} backgroundOpacity="lightOpaque" size="huge">{removeIcon}</IconButton> */}
+
 				<LabeledIconButton
 					{...SharedIconButtonProps}
-					icon='uninstall'
+					icon={removeIcon}
 					onClick={onHandleClick}
 				>
 					{$L('Remove')}

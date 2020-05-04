@@ -5,15 +5,16 @@
 	"requires": true,
 	"dependencies": {
 		"@enact/agate": {
-			"version": "github:enactjs/agate#fc0e105afcd6d478d71f60dba9ed2bf6bd40343f",
-			"from": "github:enactjs/agate#1.0.0-alpha.1",
+			"version": "github:enactjs/agate#c41dedaf4fe6a0b228439031641b64fc568c63b1",
+			"from": "github:enactjs/agate#1.0.0-alpha.14",
 			"requires": {
-				"@enact/core": "^3.0.0",
-				"@enact/i18n": "^3.0.0",
-				"@enact/spotlight": "^3.0.0",
-				"@enact/ui": "^3.0.0",
+				"@enact/core": "^3.2.0",
+				"@enact/i18n": "^3.2.0",
+				"@enact/spotlight": "^3.2.0",
+				"@enact/ui": "^3.2.0",
 				"classnames": "^2.2.6",
 				"color-convert": "^1.9.3",
+				"deep-freeze": "0.0.1",
 				"eases": "^1.0.8",
 				"immer": "^3.2.0",
 				"prop-types": "^15.6.2",
@@ -22,6 +23,92 @@
 				"react-dom": "^16.8.0"
 			},
 			"dependencies": {
+				"@enact/core": {
+					"version": "3.2.6",
+					"resolved": "https://registry.npmjs.org/@enact/core/-/core-3.2.6.tgz",
+					"integrity": "sha512-lhvlI0tnprt9WAtsmyXc2rRHCEePnLpR48muWSDYidXj5gqgUSQ3aoCf2HIDeVKputX7t+xOeQ4LOU2KaGBzZg==",
+					"requires": {
+						"classnames": "^2.2.5",
+						"invariant": "^2.2.2",
+						"prop-types": "^15.7.2",
+						"ramda": "^0.24.1",
+						"react": "^16.8.0",
+						"react-dom": "^16.8.0",
+						"react-is": "^16.8.3",
+						"recompose": "^0.26.0"
+					},
+					"dependencies": {
+						"ramda": {
+							"version": "0.24.1",
+							"resolved": "https://registry.npmjs.org/ramda/-/ramda-0.24.1.tgz",
+							"integrity": "sha1-w7d1UZfzW43DUCIoJixMkd22uFc="
+						}
+					}
+				},
+				"@enact/i18n": {
+					"version": "3.2.6",
+					"resolved": "https://registry.npmjs.org/@enact/i18n/-/i18n-3.2.6.tgz",
+					"integrity": "sha512-TsJv7phdntV9YEKTw8VEqIqcF+4aIN7l5zTyNIRKBSCC9IFceFgPLO218D5fMDsaqF0aVDk6ItrAyD7/439GyA==",
+					"requires": {
+						"@enact/core": "^3.2.6",
+						"prop-types": "^15.7.2",
+						"ramda": "^0.24.1",
+						"react": "^16.8.0",
+						"react-dom": "^16.8.0",
+						"xhr": "^2.4.1"
+					},
+					"dependencies": {
+						"ramda": {
+							"version": "0.24.1",
+							"resolved": "https://registry.npmjs.org/ramda/-/ramda-0.24.1.tgz",
+							"integrity": "sha1-w7d1UZfzW43DUCIoJixMkd22uFc="
+						}
+					}
+				},
+				"@enact/spotlight": {
+					"version": "3.2.6",
+					"resolved": "https://registry.npmjs.org/@enact/spotlight/-/spotlight-3.2.6.tgz",
+					"integrity": "sha512-xMkM6kLdWCEj2l0bAhyuX8UYouy+O6Wg5gmK8zMlUYFi54bZf7dXby1eld8/kxypKMjqugjjRyqW/X2Cbpdvvw==",
+					"requires": {
+						"@enact/core": "^3.2.6",
+						"prop-types": "^15.7.2",
+						"ramda": "^0.24.1",
+						"react": "^16.7.0",
+						"react-dom": "^16.7.0",
+						"warning": "^3.0.0"
+					},
+					"dependencies": {
+						"ramda": {
+							"version": "0.24.1",
+							"resolved": "https://registry.npmjs.org/ramda/-/ramda-0.24.1.tgz",
+							"integrity": "sha1-w7d1UZfzW43DUCIoJixMkd22uFc="
+						}
+					}
+				},
+				"@enact/ui": {
+					"version": "3.2.6",
+					"resolved": "https://registry.npmjs.org/@enact/ui/-/ui-3.2.6.tgz",
+					"integrity": "sha512-JSRM3wIPVHxvBzLMP8byLYusGI4No9reBCHR5/A0iUUrOI2ALAha3BJDsm2bnEOUvME6dsUqcknxckLB3D0Yhw==",
+					"requires": {
+						"@enact/core": "^3.2.6",
+						"classnames": "^2.2.5",
+						"direction": "^1.0.1",
+						"invariant": "^2.2.2",
+						"prop-types": "^15.7.2",
+						"ramda": "^0.24.1",
+						"react": "^16.8.0",
+						"react-dom": "^16.8.0",
+						"recompose": "^0.26.0",
+						"warning": "^3.0.0"
+					},
+					"dependencies": {
+						"ramda": {
+							"version": "0.24.1",
+							"resolved": "https://registry.npmjs.org/ramda/-/ramda-0.24.1.tgz",
+							"integrity": "sha1-w7d1UZfzW43DUCIoJixMkd22uFc="
+						}
+					}
+				},
 				"ramda": {
 					"version": "0.25.0",
 					"resolved": "https://registry.npmjs.org/ramda/-/ramda-0.25.0.tgz",
@@ -581,6 +668,11 @@
 			"resolved": "https://registry.npmjs.org/deep-extend/-/deep-extend-0.6.0.tgz",
 			"integrity": "sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==",
 			"dev": true
+		},
+		"deep-freeze": {
+			"version": "0.0.1",
+			"resolved": "https://registry.npmjs.org/deep-freeze/-/deep-freeze-0.0.1.tgz",
+			"integrity": "sha1-OgsABd4YZygZ39OM0x+RF5yJPoQ="
 		},
 		"define-properties": {
 			"version": "1.1.3",

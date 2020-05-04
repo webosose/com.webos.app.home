@@ -5,6 +5,7 @@ export default ({launcher} = {}) => ({
 	},
 	// General/Global app settings (view management, general app state, etc)
 	app: {
+		removeTargetAppInfo: {},
 		launcherShowing: (launcher === 'open'),
 		overlays: {
 			bluetooth: false,

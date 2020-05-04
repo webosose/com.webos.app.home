@@ -1,14 +1,12 @@
 import { adaptEvent, forward, handle } from '@enact/core/handle';
 import AgateDecorator from '@enact/agate/AgateDecorator';
-// DEV NOTE: Retaining for examples purposes (used by the Open Launcher button)
-// import Button from '@enact/agate/Button';
 import compose from 'ramda/src/compose';
 import ConsumerDecorator from '@enact/agate/data/ConsumerDecorator';
 import hoc from '@enact/core/hoc';
-import IconButton from '@enact/agate/IconButton';
 import kind from '@enact/core/kind';
 import platform from '@enact/core/platform';
 import PopupMenu from '@enact/agate/PopupMenu';
+import Button from '@enact/agate/Button';
 import PropTypes from 'prop-types';
 import ProviderDecorator from '@enact/agate/data/ProviderDecorator';
 import React from 'react';
@@ -20,9 +18,10 @@ import Launcher from '../views/Launcher';
 import { getQueryStringParams } from '../components/util';
 import RemovePopupMenu from '../components/RemovePopupMenu';
 import {
-	getOverlayRemove,
-	getRemoveTargetAppInfo
-} from '../state/app';
+	addLaunchPoints,
+	removeLaunchPoint,
+	updateLaunchPoint
+} from '../state/launcher';
 
 import initialState from './initialState';
 
@@ -39,25 +38,6 @@ const appIds = {
 	settings: 'com.palm.app.settings'
 };
 
-const appGroupList = [
-	[
-		"bareapp",
-		"com.webos.app.game.2048",
-		"com.webos.app.game.clumsybird",
-		"com.webos.app.game.pacman",
-		"com.webos.app.game.racer",
-		"cobalt",
-		"netflix"
-	], [
-		"bareapp1",
-		"com.webos.app.game.20481",
-		"com.webos.app.game.clumsybird1",
-		"com.webos.app.game.pacman1",
-		"com.webos.app.game.racer1",
-		"cobalt2",
-		"netflix2"
-	]
-];
 let displayAffinity = 0;
 
 const DoAfterTransition = hoc((configHoc, Wrapped) => {
@@ -182,21 +162,22 @@ const AppBase = kind({
 						</widget>
 
 						<buttons>
-							<IconButton size="large" backgroundOpacity="lightOpaque">notification</IconButton>
-							<IconButton size="large" backgroundOpacity="lightOpaque" selected={profilesShowing} onClick={onActivateProfiles}>user</IconButton>
-							<IconButton size="large" backgroundOpacity="lightOpaque" selected={bluetoothShowing} onClick={onActivateBluetooth}>bluetooth</IconButton>
-							<IconButton size="large" backgroundOpacity="lightOpaque" selected={displaySharingShowing} onClick={onActivateDisplaySharing}>pairing</IconButton>
-							<IconButton size="large" backgroundOpacity="lightOpaque" onClick={onLaunchSettings}>setting</IconButton>
+							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={100} icon="notification" />
+							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={220} selected={profilesShowing} onClick={onActivateProfiles} icon="user" />
+							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={320} selected={bluetoothShowing} onClick={onActivateBluetooth} icon="bluetooth" />
+							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={440} selected={displaySharingShowing} onClick={onActivateDisplaySharing} icon="pairing" />
+							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={500} onClick={onLaunchSettings} icon="setting" />
 						</buttons>
 					</Controls>
 				</Transition>
 
 				<AnimatedLauncher visible={launcherShowing} spotlightDisabled={!launcherShowing} onLaunchApp={onLaunchApp} />
-				<PopupMenu skin="gallium-night" open={profilesShowing} title="Profiles" closeButton onCloseButtonClick={onHidePopups}>
-					<IconButton size="huge" backgroundOpacity="lightOpaque">profileA1</IconButton>
-					<IconButton size="huge" backgroundOpacity="lightOpaque">profileA2</IconButton>
-					<IconButton size="huge" backgroundOpacity="lightOpaque">profileA3</IconButton>
-					<IconButton size="huge" backgroundOpacity="lightOpaque">profileA4</IconButton>
+				<PopupMenu skinVariants="night" open={profilesShowing} title="Profiles">
+					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA1" />
+					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA2" />
+					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA3" />
+					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA4" />
+					<Button size="huge" backgroundOpacity="lightOpaque" icon="cancel" onClick={onHidePopups}/>
 				</PopupMenu>
 				<RemovePopupMenu open={removeShowing} onClose={onHidePopups} targetInfo={removeTargetAppInfo} />
 			</div>
@@ -211,6 +192,7 @@ const AppDecorator = compose(
 	}),
 	ConsumerDecorator({
 		mount: (props, { update }) => {
+			console.log('mount');
 			setTimeout(() => {
 				update(state => {
 					state.app.launcherShowing = true;
@@ -228,7 +210,7 @@ const AppDecorator = compose(
 			};
 
 			document.addEventListener('keyup', onKeyUp);
-			document.addEventListener('webOSRelaunch', (data) => {
+			document.addEventListener('webOSRelaunch', () => {
 				update(state => {
 					state.app.launcherShowing = true;
 				});
@@ -238,10 +220,12 @@ const AppDecorator = compose(
 			let serviceConnected = false;
 
 			let listLaunchPoints = () => {
-				!serviceConnected && service.listLaunchPoints({
+				if (serviceConnected) return;
+
+				service.listLaunchPoints({
 					subscribe: true,
 					onSuccess: (res) => {
-						console.log('onSuccess');
+						console.log('listLaunchPoints response', res);
 						serviceConnected = true;
 						if (res.launchPoints) {
 							// console.log('displayAffinity : ', displayAffinity);
@@ -252,25 +236,11 @@ const AppDecorator = compose(
 							let updateInfo = res.launchPoint;
 							let changeInfo = res.change;
 							if (changeInfo === 'removed') {
-								update(state => {
-									state.launcher.launchPoints = state.launcher.launchPoints.filter(
-										info => info.id !== updateInfo.id
-									)
-								})
+								update(removeLaunchPoint(updateInfo));
 							} else if (changeInfo === 'added') {
-								update(state => {
-									state.launcher.launchPoints = state.launcher.launchPoints.concat({
-										...updateInfo
-									})
-								})
+								update(addLaunchPoints([updateInfo]));
 							} else {
-								update(state => {
-									state.launcher.launchPoints = state.launcher.launchPoints.map(
-										info => info.id === updateInfo.id
-											? { ...info, ...updateInfo}
-											: info
-									)
-								});
+								update(updateLaunchPoint(updateInfo));
 							}
 						}
 					},
@@ -360,8 +330,8 @@ const AppDecorator = compose(
 			bluetoothShowing: app.overlays.bluetooth,
 			displaySharingShowing: app.overlays.displaySharing,
 			profilesShowing: app.overlays.profiles,
-			removeShowing: getOverlayRemove,
-			removeTargetAppInfo: getRemoveTargetAppInfo
+			removeShowing: app.overlays.remove,
+			removeTargetAppInfo: app.removeTargetAppInfo
 		})
 	})
 );

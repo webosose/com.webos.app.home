@@ -1,0 +1,25 @@
+{
+    "name": "com.webos.app.home",
+    "id": "home",
+    "projectType": "webos-web",
+    "sourceLocale": "en-KR",
+    "pseudoLocale": ["zxx-XX", "zxx-Hans-XX", "zxx-Cyrl-XX", "zxx-Hebr-XX"],
+    "resourceDirs": {
+         "json":"resources"
+     },
+     "resourceFileTypes": {
+         "json":"ilib-loctool-webos-json-resource"
+     },
+    "plugins": [
+         "ilib-loctool-webos-javascript",
+         "ilib-loctool-webos-appinfo-json"
+     ],
+     "excludes": [
+         ".*",
+         "*"
+     ],
+     "includes": [
+         "src",
+         "webos-meta"
+     ]
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="en-US">
+ <file id="home_f1" original="home">
+  <group id="home_g1" name="javascript">
+    <unit id="home_1">
+    <segment>
+     <source>App title empty</source>
+     <target>App title empty</target>
+    </segment>
+   </unit>
+   <unit id="home_2">
+    <segment>
+     <source>Remove</source>
+     <target>Remove</target>
+    </segment>
+   </unit>
+     </group>
+  <group id="home_g2" name="x-json">
+   <unit id="home_3">
+    <segment>
+     <source>Home</source>
+     <target>Home</target>
+    </segment>
+   </unit>
+  </group>
+ </file>
+</xliff>

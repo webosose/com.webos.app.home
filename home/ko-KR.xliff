@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="ko-KR">
+ <file id="home_f1" original="home">
+  <group id="home_g1" name="javascript">
+    <unit id="home_1">
+    <segment>
+     <source>App title empty</source>
+     <target>빈 앱 타이틀</target>
+    </segment>
+   </unit>
+   <unit id="home_2">
+    <segment>
+     <source>Remove</source>
+     <target>삭제</target>
+    </segment>
+   </unit>
+     </group>
+  <group id="home_g2" name="x-json">
+   <unit id="home_3">
+    <segment>
+     <source>Home</source>
+     <target>홈</target>
+    </segment>
+   </unit>
+  </group>
+ </file>
+</xliff>

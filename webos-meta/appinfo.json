@@ -10,7 +10,10 @@
 	"largeIcon": "icon-large.png",
 	"defaultWindowType": "system_ui",
 	"trustLevel": "trusted",
-	"requiredPermissions": ["all"],
+	"requiredPermissions": [
+            "application.launcher",
+            "application.operation"
+        ],
 	"noSplashOnLaunch": true,
 	"spinnerOnLaunch": false,
 	"transparent": true,

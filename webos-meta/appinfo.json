@@ -12,7 +12,8 @@
 	"trustLevel": "trusted",
 	"requiredPermissions": [
             "application.launcher",
-            "application.operation"
+            "application.operation",
+            "applicationinstall.management"
         ],
 	"noSplashOnLaunch": true,
 	"spinnerOnLaunch": false,

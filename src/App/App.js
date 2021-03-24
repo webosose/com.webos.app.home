@@ -215,6 +215,9 @@ const AppDecorator = compose(
 					state.app.launcherShowing = true;
 				});
 			});
+			document.addEventListener('webOSLocaleChange', () => {
+				window.location.reload();
+			});
 			// Simulate a slow luna call
 			// Remove the setTimeout to run at normal speed
 			let serviceConnected = false;

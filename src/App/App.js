@@ -157,10 +157,6 @@ const AppBase = kind({
 				{/* <Button onClick={onActivateLauncher} selected={!launcherShowing} style={{position: 'absolute', bottom: ri.unit(ri.scale(12), 'rem'), display: (launcherShowing ? 'none' : 'block')}}>Open Launcher</Button> */}
 				<Transition direction="up" visible={launcherShowing}>
 					<Controls className={css.controls}>
-						<widget>
-							<p>NYI - Weather Widget</p>
-						</widget>
-
 						<buttons>
 							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={100} icon="notification" />
 							<Button size="large" backgroundOpacity="lightOpaque" animateOnRender animationDelay={220} selected={profilesShowing} onClick={onActivateProfiles} icon="user" />

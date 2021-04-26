@@ -12,18 +12,19 @@ import {
 } from '../../state/app';
 
 import css from './RemovePopupMenu.module.less';
-import handle, { adaptEvent, forward } from '@enact/core/handle/handle';
+import handle, {adaptEvent, forward} from '@enact/core/handle/handle';
 import service from '../../service';
 import removeIcon from '../../../assets/home-menu-popup-icon-nor-uninstall.svg';
 
-const SharedIconButtonProps = { backgroundOpacity: 'lightOpaque', inline: true, size: 'huge' };
+const SharedIconButtonProps = {backgroundOpacity: 'lightOpaque', inline: true, size: 'huge'};
 
 const RemovePopupMenuBase = kind({
 	name: 'RemovePopupMenu',
 
 	propTypes: {
-		targetInfo: PropTypes.object,
-		onClose: PropTypes.func
+		onClose: PropTypes.func,
+		onRemoveApp: PropTypes.func,
+		targetInfo: PropTypes.object
 	},
 
 	styles: {
@@ -34,7 +35,7 @@ const RemovePopupMenuBase = kind({
 	computed: {
 		title: ({targetInfo}) => {
 			if (targetInfo) {
-				if (targetInfo.hasOwnProperty('title')) {
+				if (targetInfo.Object.prototype.hasOwnProperty.call('title')) {
 					// return targetInfo.title;
 					return (targetInfo.title.length < 36) ? targetInfo.title : targetInfo.title.slice(0, 36) + '...';
 				}
@@ -52,7 +53,7 @@ const RemovePopupMenuBase = kind({
 		)
 	},
 
-	render: ({ title, onHandleClick, ...rest }) => {
+	render: ({title, onHandleClick, ...rest}) => {
 		delete rest.targetInfo;
 		delete rest.onRemoveApp;
 
@@ -79,15 +80,17 @@ const RemovePopupMenuDecorator = compose(
 	ConsumerDecorator({
 		handlers: {
 			onRemoveApp: (ev, props, {update}) => {
-				console.log('onRemoveApp', ev);
+				// console.log('onRemoveApp', ev);
 				const {id, lptype} = ev;
 				if (lptype !== 'bookmark') {
 					service.removeApp({
 						id,
 						onSuccess: (res) => {
+							/* eslint-disable-next-line no-console */
 							console.log('removeApp - onSuccess :', res);
 						},
 						onFailure: (err) => {
+							/* eslint-disable-next-line no-console */
 							console.warn(err);
 						}
 					});
@@ -95,15 +98,17 @@ const RemovePopupMenuDecorator = compose(
 					service.removeLaunchPoint({
 						launchPointId : id,
 						onSuccess: () => {
+							/* eslint-disable-next-line no-console */
 							console.log('removeLaunchPoint - onSuccess :', id);
 						},
 						onFailure: (err) => {
+							/* eslint-disable-next-line no-console */
 							console.warn(err);
 						}
 					});
 				}
 
-				console.log('disableAllOverlays');
+				// console.log('disableAllOverlays');
 				update(disableAllOverlays);
 			}
 		}

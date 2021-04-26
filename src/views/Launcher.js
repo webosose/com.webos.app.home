@@ -10,7 +10,7 @@ import LauncherTile from '../components/LauncherTile';
 
 import {
 	setRemoveTargetAppInfo,
-	enableOverlayRemove,
+	enableOverlayRemove
 } from '../state/app';
 
 import css from './Launcher.module.less';
@@ -34,11 +34,11 @@ const LauncherBase = kind({
 
 	propTypes: {
 		appsList: PropTypes.array,
+		clearDeletePopupTimer: PropTypes.func,
 		onLaunchApp: PropTypes.func,
 		ready: PropTypes.bool,
-		spotlightDisabled: PropTypes.bool,
 		setDeletePopupTimer: PropTypes.func,
-		clearDeletePopupTimer: PropTypes.func
+		spotlightDisabled: PropTypes.bool
 	},
 
 	styles: {
@@ -107,8 +107,8 @@ const Launcher = ConsumerDecorator(
 	{
 		handlers: {
 			setDeletePopupTimer: (ev, props, context) => {
-				console.log('setDeletePopupTimer');
-				console.log(ev);
+				// console.log('setDeletePopupTimer');
+				// console.log(ev);
 				const {update} = context;
 				if (deletePopupTimerId) {
 					clearTimeout(deletePopupTimerId);
@@ -120,7 +120,7 @@ const Launcher = ConsumerDecorator(
 			},
 			clearDeletePopupTimer: () => {
 				if (deletePopupTimerId) {
-					console.log('clearDeletePopupTimer');
+					// console.log('clearDeletePopupTimer');
 					clearTimeout(deletePopupTimerId);
 				}
 			}

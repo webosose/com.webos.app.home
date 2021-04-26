@@ -1,5 +1,5 @@
 import kind from '@enact/core/kind';
-import { adaptEvent, forward, handle, forProp, oneOf } from '@enact/core/handle';
+import {adaptEvent, forward, handle, forProp, oneOf} from '@enact/core/handle';
 import Image from '@enact/agate/Image';
 import {Column, Cell} from '@enact/ui/Layout';
 import Spottable from '@enact/spotlight/Spottable';
@@ -29,15 +29,15 @@ const LauncherTileBase = kind({
 
 	propTypes: {
 		children: PropTypes.node,
+		clearDeletePopupTimer: PropTypes.func,
 		color: PropTypes.string,
 		first: PropTypes.bool,
 		icon: PropTypes.string,
+		lptype: PropTypes.string,
 		notification: PropTypes.string,
 		onLaunchApp: PropTypes.func,
 		progress: PropTypes.number, 	// Between zero and one (0 -> 1)
 		setDeletePopupTimer: PropTypes.func,
-		clearDeletePopupTimer: PropTypes.func,
-		lptype: PropTypes.string,
 		systemapp: PropTypes.bool
 	},
 
@@ -54,7 +54,7 @@ const LauncherTileBase = kind({
 		onClick: handle(
 			forward('onClick'),
 			adaptEvent(
-				(ev, { lpid, appid, title, ipkUrl, notification }) => ({ launchPointId: lpid, appid, title, ipkUrl, notification }),
+				(ev, {lpid, appid, title, ipkUrl, notification}) => ({launchPointId: lpid, appid, title, ipkUrl, notification}),
 				forward('onLaunchApp')
 			)
 		),
@@ -123,11 +123,12 @@ const LauncherTileBase = kind({
 		delete rest.progress;
 		delete rest.systemapp;
 		return (
-			<div {...rest}
+			<div
+				{...rest}
 				onTouchStart={onTouchStart}
 				onTouchEnd={onTouchEnd}
 				onTouchMove={onTouchMove}
-				>
+			>
 				<Column className={css.content} align="center center">
 					<div className={css.bg} />
 					{lptype === 'bookmark' &&

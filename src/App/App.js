@@ -1,4 +1,4 @@
-import { adaptEvent, forward, handle } from '@enact/core/handle';
+import {adaptEvent, forward, handle} from '@enact/core/handle';
 import AgateDecorator from '@enact/agate/AgateDecorator';
 import compose from 'ramda/src/compose';
 import ConsumerDecorator from '@enact/agate/data/ConsumerDecorator';
@@ -15,7 +15,7 @@ import Transition from '@enact/ui/Transition';
 import service from '../service';
 import Controls from '../views/Controls';
 import Launcher from '../views/Launcher';
-import { getQueryStringParams } from '../components/util';
+import {getQueryStringParams} from '../components/util';
 import RemovePopupMenu from '../components/RemovePopupMenu';
 import {
 	addLaunchPoints,
@@ -43,22 +43,22 @@ let displayAffinity = 0;
 const DoAfterTransition = hoc((configHoc, Wrapped) => {
 	return class extends React.Component {
 		static displayName = 'DoAfterTransition';
-		constructor(props) {
+		constructor (props) {
 			super(props);
 			this.state = {
 				shown: false
 			};
 		}
 
-		handleShow = () => this.setState({ shown: true });
+		handleShow = () => this.setState({shown: true});
 		handleHide = () => {
-			this.setState({ shown: false });
+			this.setState({shown: false});
 			if (typeof window !== 'undefined') {
 				window.close();
 			}
-		}
+		};
 
-		render() {
+		render () {
 			return (
 				<Wrapped
 					onShow={this.handleShow}
@@ -71,7 +71,7 @@ const DoAfterTransition = hoc((configHoc, Wrapped) => {
 	};
 });
 
-const AnimationReadyLauncher = ({ animationReady, onLaunchApp, spotlightDisabled, ...rest }) => (
+const AnimationReadyLauncher = ({animationReady, onLaunchApp, spotlightDisabled, ...rest}) => (
 	<Transition css={css} direction="down" className={css.launcherTransition} {...rest}>
 		<Launcher onLaunchApp={onLaunchApp} spotlightDisabled={spotlightDisabled} ready={animationReady} />
 	</Transition>
@@ -90,7 +90,6 @@ const AppBase = kind({
 	name: 'App',
 
 	propTypes: {
-		removeShowing: PropTypes.bool,
 		bluetoothShowing: PropTypes.bool,
 		displaySharingShowing: PropTypes.bool,
 		launcherShowing: PropTypes.bool,
@@ -104,6 +103,7 @@ const AppBase = kind({
 		onLaunchSettings: PropTypes.func,
 		onNavigate: PropTypes.func,
 		profilesShowing: PropTypes.bool,
+		removeShowing: PropTypes.bool,
 		removeTargetAppInfo: PropTypes.object
 	},
 
@@ -119,7 +119,7 @@ const AppBase = kind({
 		),
 		onLaunchSettings: handle(
 			adaptEvent(
-				() => ({ appid: appIds.settings }),
+				() => ({appid: appIds.settings}),
 				forward('onLaunchApp')
 			)
 		)
@@ -127,7 +127,7 @@ const AppBase = kind({
 
 	computed: {
 		// If this is running on webOS, remove the background, so this becomes an overlay app
-		className: ({ styler }) => styler.append({ withBackground: !platform.webos })
+		className: ({styler}) => styler.append({withBackground: !platform.webos})
 	},
 
 	render: ({
@@ -173,7 +173,7 @@ const AppBase = kind({
 					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA2" />
 					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA3" />
 					<Button size="huge" backgroundOpacity="lightOpaque" icon="profileA4" />
-					<Button size="huge" backgroundOpacity="lightOpaque" icon="cancel" onClick={onHidePopups}/>
+					<Button size="huge" backgroundOpacity="lightOpaque" icon="cancel" onClick={onHidePopups} />
 				</PopupMenu>
 				<RemovePopupMenu open={removeShowing} onClose={onHidePopups} targetInfo={removeTargetAppInfo} />
 			</div>
@@ -182,13 +182,13 @@ const AppBase = kind({
 });
 
 const AppDecorator = compose(
-	AgateDecorator({ overlay: true }),
+	AgateDecorator({overlay: true}),
 	ProviderDecorator({
 		state: initialState(getQueryStringParams())
 	}),
 	ConsumerDecorator({
-		mount: (props, { update }) => {
-			console.log('mount');
+		mount: (props, {update}) => {
+			// console.log('mount');
 			setTimeout(() => {
 				update(state => {
 					state.app.launcherShowing = true;
@@ -196,7 +196,7 @@ const AppDecorator = compose(
 			}, 0);
 
 			// add a key handler to toggle launcher
-			const onKeyUp = ({ keyCode }) => {
+			const onKeyUp = ({keyCode}) => {
 				if (keyCode === 48) { // 0
 					update(state => {
 						state.app.launcherShowing = !state.app.launcherShowing;
@@ -224,14 +224,14 @@ const AppDecorator = compose(
 				service.listLaunchPoints({
 					subscribe: true,
 					onSuccess: (res) => {
-						console.log('listLaunchPoints response', res);
+						// console.log('listLaunchPoints response', res);
 						serviceConnected = true;
 						if (res.launchPoints) {
 							// console.log('displayAffinity : ', displayAffinity);
 							update(state => {
-								state.launcher.launchPoints = res.launchPoints; //.filter(i => appGroupList[displayAffinity].indexOf(i.id) >= 0);
+								state.launcher.launchPoints = res.launchPoints; // .filter(i => appGroupList[displayAffinity].indexOf(i.id) >= 0);
 							});
-						} else if(res.launchPoint){
+						} else if (res.launchPoint) {
 							let updateInfo = res.launchPoint;
 							let changeInfo = res.change;
 							if (changeInfo === 'removed') {
@@ -244,14 +244,14 @@ const AppDecorator = compose(
 						}
 					},
 					onFailure: () => {
-						console.log('onFailure');
+						// console.log('onFailure');
 						serviceConnected = false;
 					}
 				});
 				// var start = new Date().getTime();
 				// while (new Date().getTime() < start + 2000);
 				// console.log('time:', start);
-			}
+			};
 			setTimeout(listLaunchPoints, 300);
 			setInterval(listLaunchPoints, 3000);
 
@@ -265,54 +265,53 @@ const AppDecorator = compose(
 			};
 		},
 		handlers: {
-			onHideEverything: (ev, props, { update }) => {
+			onHideEverything: (ev, props, {update}) => {
 				update(state => {
 					state.app.launcherShowing = false;
 					setAllKeys(state.app.overlays, false);
 				});
 				return true;
 			},
-			onHidePopups: (ev, props, { update }) => {
+			onHidePopups: (ev, props, {update}) => {
 				update(state => {
 					setAllKeys(state.app.overlays, false);
 				});
 			},
-			onActivateLauncher: (ev, props, { update }) => {
+			onActivateLauncher: (ev, props, {update}) => {
 				update(state => {
 					state.app.launcherShowing = true;
 				});
 			},
-			onActivateBluetooth: (ev, props, { update }) => {
+			onActivateBluetooth: (ev, props, {update}) => {
 				update(state => {
 					setAllKeys(state.app.overlays, false);
 					state.app.overlays.bluetooth = true;
 				});
 			},
-			onActivateDisplaySharing: (ev, props, { update }) => {
+			onActivateDisplaySharing: (ev, props, {update}) => {
 				update(state => {
 					setAllKeys(state.app.overlays, false);
 					state.app.overlays.displaySharing = true;
 				});
 			},
-			onActivateProfiles: (ev, props, { update }) => {
+			onActivateProfiles: (ev, props, {update}) => {
 				update(state => {
 					setAllKeys(state.app.overlays, false);
 					state.app.overlays.profiles = true;
 				});
 			},
-			onLaunchApp: ({ launchPointId, appid }) => {
+			onLaunchApp: ({launchPointId, appid}) => {
 				displayAffinity = JSON.parse(window.PalmSystem.launchParams).displayAffinity;
-				console.log('onLaunchApp');
-				if(launchPointId) {
-					console.log("Launch with launchPointId: ", launchPointId);
+				// console.log('onLaunchApp');
+				if (launchPointId) {
+					// console.log('Launch with launchPointId: ', launchPointId);
 					service.launch({
-						launchPointId:launchPointId, params: { displayAffinity }
+						launchPointId:launchPointId, params: {displayAffinity}
 					});
-				}
-				else {
-					console.log("Launch with appId: ", appid);
+				} else {
+					// console.log('Launch with appId: ', appid);
 					service.launch({
-						id:appid, params: { displayAffinity }
+						id:appid, params: {displayAffinity}
 					});
 				}
 				return true;
@@ -324,7 +323,7 @@ const AppDecorator = compose(
 			// 	});
 			// }
 		},
-		mapStateToProps: ({ app }) => ({
+		mapStateToProps: ({app}) => ({
 			launcherShowing: app.launcherShowing,
 			bluetoothShowing: app.overlays.bluetooth,
 			displaySharingShowing: app.overlays.displaySharing,

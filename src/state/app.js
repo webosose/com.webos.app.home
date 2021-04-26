@@ -45,9 +45,9 @@ const setRemoveTargetAppInfo = setAppState('removeTargetAppInfo');
 const disableAllOverlays = state => {
 	const overlays = getAppState('overlays', state);
 	for (const o in overlays) {
-		if(overlays[o]) {
+		if (overlays[o]) {
 			overlays[o] = false;
-			console.log("setOverlayState", o, false);
+			// console.log('setOverlayState', o, false);
 		}
 	}
 };

@@ -16,9 +16,9 @@ const getQueryStringParams = (param) => {
 		const params = qs.parse(window.location.search);
 		return param ? params[param] : params;
 	}
-	else {
-		return;
-	}
+	// else {
+	// 	return;
+	// }
 };
 
 /*

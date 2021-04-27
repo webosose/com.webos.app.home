@@ -1,7 +1,7 @@
 import {Cell, Row} from '@enact/ui/Layout';
 import kind from '@enact/core/kind';
 import PropTypes from 'prop-types';
-import React from 'react';
+// import React from 'react';
 import Slottable from '@enact/ui/Slottable';
 
 const ControlsBase = kind({

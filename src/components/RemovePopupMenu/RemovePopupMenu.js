@@ -4,7 +4,7 @@ import ConsumerDecorator from '@enact/agate/data/ConsumerDecorator';
 import $L from '@enact/i18n/$L/$L';
 import kind from '@enact/core/kind';
 import compose from 'ramda/src/compose';
-import React from 'react';
+// import React from 'react';
 import PropTypes from 'prop-types';
 
 import {

@@ -43,7 +43,7 @@
 		"prop-types": "^15.6.2",
 		"query-string": "^6.8.3",
 		"ramda": "^0.26.1",
-		"react": "^16.8.0",
+		"react": "^16.14.0",
 		"react-dom": "^16.8.0"
 	},
 	"devDependencies": {

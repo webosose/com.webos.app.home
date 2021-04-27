@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import PropTypes from 'prop-types';
 import kind from '@enact/core/kind';
 import Scroller from '@enact/agate/Scroller';

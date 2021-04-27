@@ -4,7 +4,7 @@ import Image from '@enact/agate/Image';
 import {Column, Cell} from '@enact/ui/Layout';
 import Spottable from '@enact/spotlight/Spottable';
 import Skinnable from '@enact/agate/Skinnable';
-import React from 'react';
+// import React from 'react';
 import PropTypes from 'prop-types';
 import css from './LauncherTile.module.less';
 import bookmarkIcon from '../../../assets/home-app-launcher-icon-bookmark-01.svg';

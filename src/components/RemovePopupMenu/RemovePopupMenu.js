@@ -35,7 +35,7 @@ const RemovePopupMenuBase = kind({
 	computed: {
 		title: ({targetInfo}) => {
 			if (targetInfo) {
-				if (Object.prototype.hasOwnProperty.call(targetInfo,'title')) {
+				if (Object.prototype.hasOwnProperty.call(targetInfo, 'title')) {
 					// return targetInfo.title;
 					return (targetInfo.title.length < 36) ? targetInfo.title : targetInfo.title.slice(0, 36) + '...';
 				}

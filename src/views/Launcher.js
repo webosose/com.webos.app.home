@@ -90,6 +90,7 @@ const LauncherBase = kind({
 					className={css.appsScroller}
 					direction="horizontal"
 					horizontalScrollbar="hidden"
+					scrollMode="translate"
 					spotlightDisabled={spotlightDisabled}
 				>
 					<div className={css.appsList}>

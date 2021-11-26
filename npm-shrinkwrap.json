@@ -35,6 +35,11 @@
 				"warning": "^3.0.0"
 			},
 			"dependencies": {
+				"immer": {
+					"version": "3.3.0",
+					"resolved": "https://registry.npmjs.org/immer/-/immer-3.3.0.tgz",
+					"integrity": "sha512-vlWRjnZqoTHuEjadquVHK3GxsXe1gNoATffLEA8Qbrdd++Xb+wHEFiWtwAKTscMBoi1AsvEMXhYRzAXA8Ex9FQ=="
+				},
 				"ramda": {
 					"version": "0.25.0",
 					"resolved": "https://registry.npmjs.org/ramda/-/ramda-0.25.0.tgz",
@@ -1048,9 +1053,9 @@
 			"integrity": "sha512-XTOVhfXLbN++C48Vn0klaemSbi4tk3aHF5+GuTPu40gERVWKH75xQTZ/Zu2J+ejGc8VudILlFpCDVx3hx2j8xg=="
 		},
 		"immer": {
-			"version": "3.3.0",
-			"resolved": "https://registry.npmjs.org/immer/-/immer-3.3.0.tgz",
-			"integrity": "sha512-vlWRjnZqoTHuEjadquVHK3GxsXe1gNoATffLEA8Qbrdd++Xb+wHEFiWtwAKTscMBoi1AsvEMXhYRzAXA8Ex9FQ=="
+			"version": "9.0.6",
+			"resolved": "https://registry.npmjs.org/immer/-/immer-9.0.6.tgz",
+			"integrity": "sha512-G95ivKpy+EvVAnAab4fVa4YGYn24J1SpEktnJX7JJ45Bd7xqME/SCplFzYFmTbrkwZbQ4xJK1xMTUYBkN6pWsQ=="
 		},
 		"import-lazy": {
 			"version": "2.1.0",

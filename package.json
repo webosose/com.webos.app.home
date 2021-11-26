@@ -39,7 +39,7 @@
 		"@enact/ui": "4.0.3",
 		"@enact/webos": "4.0.3",
 		"ilib": "^14.3.0",
-		"immer": "^3.2.0",
+		"immer": "^9.0.6",
 		"prop-types": "^15.6.2",
 		"query-string": "^6.8.3",
 		"ramda": "^0.26.1",

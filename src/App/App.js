@@ -189,11 +189,11 @@ const AppDecorator = compose(
 	ConsumerDecorator({
 		mount: (props, {update}) => {
 			// console.log('mount');
-			setTimeout(() => {
-				update(state => {
-					state.app.launcherShowing = true;
-				});
-			}, 0);
+			// setTimeout(() => {
+			// 	update(state => {
+			// 		state.app.launcherShowing = true;
+			// 	});
+			// }, 0);
 
 			// add a key handler to toggle launcher
 			const onKeyUp = ({keyCode}) => {
@@ -217,19 +217,20 @@ const AppDecorator = compose(
 			// Simulate a slow luna call
 			// Remove the setTimeout to run at normal speed
 			let serviceConnected = false;
-
 			let listLaunchPoints = () => {
 				if (serviceConnected) return;
-
+				// console.time("Timer: Get List of Launch Points");
 				service.listLaunchPoints({
 					subscribe: true,
 					onSuccess: (res) => {
 						// console.log('listLaunchPoints response', res);
+						// console.timeEnd("Timer: Get List of Launch Points");
 						serviceConnected = true;
 						if (res.launchPoints) {
 							// console.log('displayAffinity : ', displayAffinity);
 							update(state => {
 								state.launcher.launchPoints = res.launchPoints; // .filter(i => appGroupList[displayAffinity].indexOf(i.id) >= 0);
+								state.app.launcherShowing = true;
 							});
 						} else if (res.launchPoint) {
 							let updateInfo = res.launchPoint;
@@ -244,7 +245,7 @@ const AppDecorator = compose(
 						}
 					},
 					onFailure: () => {
-						// console.log('onFailure');
+						// console.log('listLaunchPoints :::');
 						serviceConnected = false;
 					}
 				});

@@ -39,7 +39,6 @@ const appIds = {
 };
 
 let displayAffinity = 0;
-
 const DoAfterTransition = hoc((configHoc, Wrapped) => {
 	return class extends React.Component {
 		static displayName = 'DoAfterTransition';
@@ -211,8 +210,22 @@ const AppDecorator = compose(
 					state.app.launcherShowing = true;
 				});
 			});
+			if(typeof window !== 'undefined'){
+				window.localStorage.setItem("_locale", window.navigator.language);
+				window.PalmSystem.PmLogString(6, 'locale 1 ::: '+window.navigator.language, {}, '');
+			}
 			document.addEventListener('webOSLocaleChange', () => {
-				window.location.reload();
+				if(typeof window !== 'undefined' &&  window.localStorage){
+					let _locale = window.localStorage.getItem("_locale");
+					window.PalmSystem.PmLogString(6, 'locale 2 ::: '+window.navigator.language, {}, '');
+					window.PalmSystem.PmLogString(6, 'locale 3 ::: '+_locale, {}, '');
+					if(_locale && _locale !== window.navigator.language){
+						window.localStorage.setItem("_locale", window.navigator.language);
+						window.location.reload();
+					}else{
+						window.localStorage.setItem("_locale", window.navigator.language);
+					}
+				}
 			});
 			// Simulate a slow luna call
 			// Remove the setTimeout to run at normal speed

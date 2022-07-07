@@ -1,7 +1,7 @@
 {
-	"name": "cameraapp",
+	"name": "com.webos.app.home",
 	"version": "1.0.0",
-	"description": "App to demostrate camera features",
+	"description": "Home App to list apps and show the status bar",
 	"author": "",
 	"main": "src/index.js",
 	"scripts": {
@@ -36,16 +36,16 @@
 		"dist/*"
 	],
 	"dependencies": {
-		"@enact/core": "^4.0.0",
-		"@enact/i18n": "^4.0.0",
-		"@enact/sandstone": "^2.0.0",
-		"@enact/spotlight": "^4.0.0",
-		"@enact/ui": "^4.0.0",
-		"@enact/webos": "^4.0.0",
-		"ilib": "npm:ilib-webos@^14.6.2-webos1",
+		"@enact/core": "^4.5.0",
+		"@enact/i18n": "^4.5.0",
+		"@enact/sandstone": "^2.5.0",
+		"@enact/spotlight": "^4.5.0",
+		"@enact/ui": "^4.5.0",
+		"@enact/webos": "^4.5.0",
+		"ilib": "^14.4.0",
 		"prop-types": "^15.6.2",
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1",
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0",
 		"react-redux": "^7.2.4",
 		"redux": "^4.1.0",
 		"redux-thunk": "^2.3.0"

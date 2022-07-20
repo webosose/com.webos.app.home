@@ -1,0 +1,20 @@
+export const GET_LAUNCH_POINTS = "GET_LAUNCH_POINTS";
+export const ADD_LAUNCH_POINT = "ADD_LAUNCH_POINT";
+export const REMOVE_LAUNCH_POINT = "REMOVE_LAUNCH_POINT";
+export const RUNNING_APPS = 'RUNNING_APPS';
+export const SHOW_APP = 'SHOW_APP';
+export const APP_BAR_ALIGN = 'APP_BAR_ALIGN';
+export const APP_BAR_SHOW = 'APP_BAR_SHOW';
+export const SORT_TYPE_UPDATE = 'SORT_TYPE_UPDATE';
+
+export const APP_BAR_NAMES = 'APP_BAR_NAMES';
+export const APP_BAR_NAME_DELETE = 'APP_BAR_NAME_DELETE';
+export const CHANGE_APP_BAR_VIEW = 'CHANGE_APP_BAR_VIEW';
+export const SEARCH_NAME_UPDATE = 'SEARCH_NAME_UPDATE';
+
+export const SHOW_ALERT = 'SHOW_ALERT';
+export const HIDE_ALERT = 'HIDE_ALERT';
+
+export const SEARCH_STRING = 'SEARCH_STRING';
+//Alert Types
+export const DELETE_APP = 'DELETE_APP';

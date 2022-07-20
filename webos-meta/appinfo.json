@@ -13,7 +13,8 @@
 	"requiredPermissions": [
             "application.launcher",
             "application.operation",
-            "applicationinstall.management"
+            "applicationinstall.management",
+            "database.operation"
         ],
 	"noSplashOnLaunch": true,
 	"spinnerOnLaunch": false,

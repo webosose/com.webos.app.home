@@ -60,7 +60,13 @@ const LunaProvider = {
 	getAppInfo: luna('com.webos.service.applicationmanager', 'getAppInfo'),
 	getAppLifeStatus: luna('com.webos.service.applicationmanager', 'getAppLifeStatus'),  // subscribable
 	getAppLifeEvents: luna('com.webos.service.applicationmanager', 'getAppLifeEvents'), // subscribable
-	getAppStatus: luna('com.webos.service.applicationmanager', 'getAppStatus') // subscribable
+	getAppStatus: luna('com.webos.service.applicationmanager', 'getAppStatus'), // subscribable
+
+	//DB specific
+	putKind: luna('com.webos.service.db', 'putKind'),
+	put: luna('com.webos.service.db', 'put'),
+	merge: luna('com.webos.service.db', 'merge'),
+	find: luna('com.webos.service.db', 'find'),
 };
 
 export default LunaProvider;

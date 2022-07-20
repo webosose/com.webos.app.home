@@ -1,4 +1,4 @@
-@import "~@enact/agate/styles/mixins.less";
+@import "~@enact/sandstone/styles/mixins.less";
 
 .enact-fit {
 	position: absolute;
@@ -7,7 +7,10 @@
 	right: 0;
 	bottom: 0;
 }
-
+body{
+	background-image:url('./../../assets/backgorund.jpg');
+	display: none;
+}
 .app {
 	&.withBackground {
 		background-image: linear-gradient(to bottom right, lighten(red, 20%), lighten(blue, 20%));
@@ -27,8 +30,8 @@
 
 	.basement {
 		position: absolute;
+		// background-image:url('./../../assets/backgorund.jpg');
 		.position(0);
-		background-image: linear-gradient(to bottom, fade(black, 70%), fade(black, 15%) 70%);
 	}
 
 	.quickSettingsTransition,
@@ -46,6 +49,26 @@
 
 	.launcherTransition {
 		top: auto;
-		height: 399px;
+		height: 6.5rem;		
+		margin: 1.66rem;
+	}
+	.launchpad{
+		background-color: green;
+		position: absolute;
+		height: 68%;
+		width: 100%;
+	}
+	.bottom_line_ctn{
+		position: absolute;
+		left: 0;
+		top: auto;
+		right: 0;
+		bottom: .7rem;
+	}
+	.bottom_line{
+		width: 15.92rem;
+		height: 0.21rem;
+		background: rgba(255, 255, 255, 0.46);
+		margin: 0 auto;
 	}
 }

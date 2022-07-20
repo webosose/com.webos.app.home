@@ -1,30 +1,34 @@
 {
-	"name": "com.webos.app.home",
-	"version": "0.1.0",
-	"description": "webOS Home Application",
-	"author": "LG SVL",
+	"name": "cameraapp",
+	"version": "1.0.0",
+	"description": "App to demostrate camera features",
+	"author": "",
 	"main": "src/index.js",
 	"scripts": {
-		"serve": "nodemon --watch .env --exec \"enact serve\"",
-		"serve-mock": "cross-env REACT_APP_SERVICE_PROVIDER=Mock npm run serve",
-		"serve-luna": "cross-env REACT_APP_SERVICE_PROVIDER=Luna npm run serve",
+		"serve": "enact serve",
 		"pack": "enact pack",
 		"pack-p": "enact pack -p",
 		"watch": "enact pack --watch",
 		"clean": "enact clean",
-		"lint": "enact lint --strict .",
+		"lint": "enact lint .",
 		"license": "enact license",
-		"test": "echo \"No test suite\" && exit 0",
+		"test": "enact test",
 		"test-watch": "enact test --watch"
 	},
-	"license": "Apache-2.0",
+	"license": "UNLICENSED",
 	"private": true,
-	"repository": "https://github.com/enyojs/webos-auto-home.git",
+	"repository": "",
+	"engines": {
+		"npm": ">=6.9.0"
+	},
 	"enact": {
-		"theme": "agate"
+		"theme": "sandstone",
+		"deep": [
+			"(window.PalmSystem && window.PalmSystem.launchParams && JSON.parse(window.PalmSystem.launchParams).target) || (window.localStorage.getItem('menuTransparency') && JSON.parse(window.localStorage.getItem('menuTransparency')).menuTransparency==='off') || (window.PalmSystem && window.PalmSystem.highContrast === 'on')"
+		]
 	},
 	"eslintConfig": {
-		"extends": "enact/strict"
+		"extends": "enact"
 	},
 	"eslintIgnore": [
 		"node_modules/*",
@@ -32,22 +36,18 @@
 		"dist/*"
 	],
 	"dependencies": {
-		"@enact/agate": "^2.0.0-beta.2",
-		"@enact/core": "4.0.3",
-		"@enact/i18n": "4.0.3",
-		"@enact/spotlight": "4.0.3",
-		"@enact/ui": "4.0.3",
-		"@enact/webos": "4.0.3",
-		"ilib": "^14.3.0",
-		"immer": "^3.2.0",
+		"@enact/core": "^4.0.0",
+		"@enact/i18n": "^4.0.0",
+		"@enact/sandstone": "^2.0.0",
+		"@enact/spotlight": "^4.0.0",
+		"@enact/ui": "^4.0.0",
+		"@enact/webos": "^4.0.0",
+		"ilib": "npm:ilib-webos@^14.6.2-webos1",
 		"prop-types": "^15.6.2",
-		"query-string": "^6.8.3",
-		"ramda": "^0.26.1",
-		"react": "17.0.1",
-		"react-dom": "17.0.1"
-	},
-	"devDependencies": {
-		"cross-env": "^5.2.0",
-		"nodemon": "^1.18.10"
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1",
+		"react-redux": "^7.2.4",
+		"redux": "^4.1.0",
+		"redux-thunk": "^2.3.0"
 	}
 }

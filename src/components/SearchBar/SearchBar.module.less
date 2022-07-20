@@ -1,0 +1,62 @@
+@import '~@enact/sandstone/styles/skin.less';
+
+input::-webkit-input-placeholder {
+	color: #000,  !important;
+}
+
+.input_cnt {
+	.applySkins({
+		width: 27.08rem;
+		height: 3.33rem;
+		margin:0;
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 0.5rem 0 0 0.5rem;
+
+		.input {
+			border-bottom: 0;
+			// padding: 0 120px 0 0;
+			padding-left: 0;
+			font-weight: 700;
+			color: black;
+			opacity: 1;
+		}
+
+		&.focused,
+		&:focus-within {
+			background-color: #fff;
+
+			.input {
+				color: #000;
+				opacity: 1;
+			}
+
+
+		}
+
+		;
+	});
+
+}
+
+.appsorting {
+	height: 3.33rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 0 0.5rem 0.5rem 0;
+	color: #000;
+}
+
+.clearIcon {
+	// position: relative;
+	// z-index: 100;
+
+	.applySkins({
+		.icon {
+			color: #383838;
+			font-size: 2rem;
+
+		}
+	})
+}

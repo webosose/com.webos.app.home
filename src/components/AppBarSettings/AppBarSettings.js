@@ -16,6 +16,7 @@ import Button from '@enact/sandstone/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeAppBarView, changeAppBarViewAlign } from '../../actions/registerKind';
 import Scrim from '../Scrim/Scrim';
+import { SHOW_APP } from '../../actions/actionNames';
 const MenuIconButton = kind({
     name: 'SettingsIcon',
     render: (props) => {
@@ -39,6 +40,13 @@ const AppBarSettings = () => {
     const onSelectAppBarView = useCallback((value) => {
         const appShow = value.data === 'Visible';
         dispatch(changeAppBarView(appShow))
+        if(!appShow){
+            setIsOpened(false)
+            dispatch({
+				type: SHOW_APP,
+				payload: false
+			});
+        }
     }, [dispatch])
     const onSelectAlign = useCallback((value) => {
         setIsOpened(false)

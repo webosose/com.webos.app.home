@@ -13,7 +13,7 @@ import getRunningApps from '../actions/getRunningApps';
 import registerKind from '../actions/registerKind';
 import LaunchPad from '../views/LaunchPad/LaunchPad';
 import launchAction from '../actions/launchAction';
-import backgroundImage from './../../assets/backgorund.jpg';
+import backgroundImage from './../../assets/background.jpg';
 
 const App = () => {
 	const [shownLaunchPad, setShownLaunchPad] = useState(false);
@@ -23,7 +23,7 @@ const App = () => {
 		// if(!shownLaunchPad){
 		// 	document.body.style.backgroundImage = "url('../../assets/launchpad_back.jpg')";
 		// }else {
-		// 	document.body.style.backgroundImage = "url('../../assets/backgorund.jpg')";
+		// 	document.body.style.backgroundImage = "url('../../assets/background.jpg')";
 		// }
 		setShownLaunchPad(!shownLaunchPad);
 	}, [shownLaunchPad])

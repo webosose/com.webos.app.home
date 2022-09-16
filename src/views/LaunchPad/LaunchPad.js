@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from '@enact/sandstone/Image';
 import historysearch from '../../../assets/historysearch.png'
 import { deleteAllSearchNames } from '../../actions/registerKind';
-import AppIcon from '../../components/AppIcon/AppIcon';
 import Carousel from '../../components/Carousel/Carousel';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import SearchHistory from '../../components/SearchHistory/SearchHistory';
-import { getClientWidth } from '../../util/util';
 import css from './LaunchPad.module.less';
+import AppList from '../../components/AppList/AppList';
+import { CLEAR_APPBAR_EDIT, CLEAR_LAUNCHPAD_EDIT, SET_LAUNCHPAD_EDIT } from '../../actions/actionNames';
 
 let delay;
 let longPressEvent = false;
@@ -16,15 +16,19 @@ const LaunchPad = () => {
     const appList = useSelector(state => state.appList);
     const sortType = useSelector(state => state.sortType);
     const [chunckAppList, setChunckAppList] = useState([]);
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState({ enabled: false, value: '' });
     const [showSearchHistory, setShowSearchHistory] = useState(false);
+    const dragStatus = useSelector(state => state.dragStatus);
     const dispatch = useDispatch();
     useEffect(() => {
         let result = [];
-        let arr = filter ? appList.filter((v) => {
-            const title = v.title || v.id;
-            return title.toLowerCase().indexOf(filter) > -1;
-        }) : appList;
+        let arr = appList;
+        if (filter.enabled) {
+            arr = filter.value ? appList.filter((v) => {
+                const title = v.title || v.id;
+                return title.toLowerCase().indexOf(filter.value) > -1;
+            }) : [];
+        }
         const chunkSize = 12;
         let sortFunction = (a, b) => {
             if (a.title.toLowerCase() < b.title.toLowerCase()) {
@@ -53,47 +57,50 @@ const LaunchPad = () => {
         }
         setChunckAppList(result);
     }, [appList, filter, sortType])
-    const [showEdit, setShowEdit] = useState(false);
-    const addEdit = useCallback(() => {
-        setShowEdit(true);
-    }, []);
+
     const removeEdit = useCallback(() => {
         if (!longPressEvent) {
-            setShowEdit(false);
+            dispatch({ type: CLEAR_LAUNCHPAD_EDIT })
         }
-    }, []);
+        dispatch({ type: CLEAR_APPBAR_EDIT })
+    }, [dispatch]);
     /*Long press */
     let longpress = 500;
     const mouseDownHandler = useCallback(() => {
         longPressEvent = false;
         delay = setTimeout(() => {
-            addEdit();
+            //addEdit();
+            dispatch({ type: SET_LAUNCHPAD_EDIT })
             longPressEvent = true;
         }, longpress);
-    }, [addEdit, longpress])
+    }, [dispatch, longpress])
     const mouseUpHandler = useCallback(() => {
+        console.log('mouseUpHandler..')
         clearTimeout(delay);
     }, [])
-    const mouseOutHandler = useCallback(() => {
-        clearTimeout(delay);
-    }, [])
+
     /*--------------Long press */
     const showSearchHistoryPage = useCallback((value) => {
         setShowSearchHistory(value);
     }, [setShowSearchHistory])
 
     const onFilterHandler = useCallback((value) => {
-        setFilter(value)
+        setChunckAppList([]);
+        setFilter({ ...value });
         showSearchHistoryPage(false)
     }, [showSearchHistoryPage])
 
     const onClearAllHandler = useCallback(() => {
+        window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{"main":"com.webos.app.home", "sub":"searchbar","event":"searchistory","extra": {"history":"clearall","deletedsearchtext": ""}}', '');
         setShowSearchHistory(false);
         dispatch(deleteAllSearchNames())
     }, [setShowSearchHistory, dispatch])
     const onClickHistoryIcon = useCallback(() => {
+        window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', `{"main":"com.webos.app.home", "sub":"searchbar","event":"searchistory","extra": { "clickeditem":"searchistory" }}`, '');
         showSearchHistoryPage(!showSearchHistory)
     }, [showSearchHistoryPage, showSearchHistory])
+    // console.log("filter:: ",filter)
+
     return (
         <div>
             <div className={css.searchcnt}>
@@ -105,24 +112,14 @@ const LaunchPad = () => {
 
             {showSearchHistory ?
                 <SearchHistory clearAllHandler={onClearAllHandler} /> :
-                <Carousel size={chunckAppList.length}>
-                    {chunckAppList.map((value, i) => {
-                        return <div className={css.item}
-                            key={i}
-                            onTouchStart={mouseDownHandler}
-                            onTouchEnd={mouseUpHandler}
-                            onTouchCancel={mouseOutHandler}
-                            onClick={removeEdit}
-                            style={{ width: getClientWidth() + 'px' }}>
-                            {value.map((app, index) => {
-                                return <AppIcon key={index} src={'file:' + app.icon}
-                                    source='launchpad' title={app.title} id={app.id}
-                                    edit={showEdit ? 1 : 0} defaultapp={app.default}
-                                    removable={app.removable} />
-                            })}
-                        </div>
-                    })}
-                </Carousel>}
+                <div onTouchStart={mouseDownHandler}
+                    onTouchEnd={mouseUpHandler}
+                    onClick={removeEdit}>
+                    <Carousel dragStatus={dragStatus} size={chunckAppList.length}>
+                        {chunckAppList.map((value, index) => {
+                            return <AppList apps={value} key={index} />
+                        })}
+                    </Carousel></div>}
 
         </div>
     )

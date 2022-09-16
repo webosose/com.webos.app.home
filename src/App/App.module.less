@@ -7,10 +7,20 @@
 	right: 0;
 	bottom: 0;
 }
-body{
-	background-image:url('./../../assets/backgorund.jpg');
+
+body {
+	background-image: url('./../../assets/app_bg.jpg');
 	display: none;
 }
+
+.lauchpad_bg {
+	background-image: url('./../../assets/launchpad_bg.jpg');
+}
+
+.app_bg {
+	background-image: url('./../../assets/app_bg.jpg');
+}
+
 .app {
 	&.withBackground {
 		background-image: linear-gradient(to bottom right, lighten(red, 20%), lighten(blue, 20%));
@@ -19,7 +29,7 @@ body{
 	.transition {
 		pointer-events: none;
 
-		.inner > * {
+		.inner>* {
 			pointer-events: auto;
 		}
 	}
@@ -36,6 +46,7 @@ body{
 
 	.quickSettingsTransition,
 	.launcherTransition {
+
 		&,
 		.inner {
 			.enact-fit();
@@ -49,23 +60,26 @@ body{
 
 	.launcherTransition {
 		top: auto;
-		height: 6.5rem;		
-		margin: 1.66rem;
+		height: 6.5rem;
+		margin: 1.66rem 2.1rem;
 	}
-	.launchpad{
+
+	.launchpad {
 		background-color: green;
 		position: absolute;
 		height: 68%;
 		width: 100%;
 	}
-	.bottom_line_ctn{
+
+	.bottom_line_ctn {
 		position: absolute;
 		left: 0;
 		top: auto;
 		right: 0;
 		bottom: .7rem;
 	}
-	.bottom_line{
+
+	.bottom_line {
 		width: 15.92rem;
 		height: 0.21rem;
 		background: rgba(255, 255, 255, 0.46);

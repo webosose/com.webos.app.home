@@ -9,6 +9,7 @@ import appAlert from './appAlert';
 import searchNames from './searchNames';
 import sortType from './sortType';
 import searchString from './searchString';
+import editStatus from './editStatus';
 const rootReducer = combineReducers({
     appList:getApplist,
     appState,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     appAlert,
     searchNames,
     sortType,
-    searchString
+    searchString,
+    editStatus
 });
 
 export default rootReducer;

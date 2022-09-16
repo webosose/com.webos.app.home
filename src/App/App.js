@@ -13,19 +13,23 @@ import getRunningApps from '../actions/getRunningApps';
 import registerKind from '../actions/registerKind';
 import LaunchPad from '../views/LaunchPad/LaunchPad';
 import launchAction from '../actions/launchAction';
-import backgroundImage from './../../assets/backgorund.jpg';
+import backgroundImage from './../../assets/app_bg.jpg'
+import launchpadImage from './../../assets/launchpad_bg.jpg'
 
 const App = () => {
 	const [shownLaunchPad, setShownLaunchPad] = useState(false);
 	const dispatch = useDispatch();
 	const shown = useSelector(state => state.appState);
 	const launchPadHandler = useCallback(() => {
-		// if(!shownLaunchPad){
-		// 	document.body.style.backgroundImage = "url('../../assets/launchpad_back.jpg')";
-		// }else {
-		// 	document.body.style.backgroundImage = "url('../../assets/backgorund.jpg')";
-		// }
-		setShownLaunchPad(!shownLaunchPad);
+		if (typeof window !== 'undefined') {
+			if (!shownLaunchPad) {
+				document.body.className = css.lauchpad_bg;
+			} else {
+				document.body.className = css.app_bg
+			}
+			window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{ "main":"com.webos.app.home", "sub": "launchpad", "event": "click",  "extra": { "clickeditem":"launchpad" } }', '');
+			setShownLaunchPad(!shownLaunchPad);
+		}
 	}, [shownLaunchPad])
 	const handleHide = useCallback(() => {
 		if (!shownLaunchPad) {
@@ -70,8 +74,8 @@ const App = () => {
 	}, [showApp, appRelaunch, dispatch])
 
 	const launchSettings = useCallback(() => {
-        dispatch(launchAction('com.palm.app.settings'));
-    }, [dispatch]);
+		dispatch(launchAction('com.palm.app.settings'));
+	}, [dispatch]);
 	return (
 		<div className={css.app}>
 			<Transition type="fade" visible={shown}>
@@ -84,7 +88,7 @@ const App = () => {
 						<Button size="large" backgroundOpacity="opaque" icon="profile" />
 						<Button size="large" backgroundOpacity="opaque" icon="bluetooth" />
 						<Button size="large" backgroundOpacity="opaque" icon="share" />
-						<Button size="large" backgroundOpacity="opaque" icon="gear" onClick={launchSettings}/>
+						<Button size="large" backgroundOpacity="opaque" icon="gear" onClick={launchSettings} />
 					</buttons>
 				</Controls>
 			</Transition>
@@ -105,7 +109,8 @@ const App = () => {
 				className={css.bottom_line_ctn}>
 				<div className={css.bottom_line} />
 			</Transition>
-			<img  width="0" height="0" alt="" src={backgroundImage}  />
+			<img width="0" height="0" alt="" src={backgroundImage} />
+			<img width="0" height="0" alt="" src={launchpadImage} />
 		</div>
 	)
 }

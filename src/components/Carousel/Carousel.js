@@ -51,9 +51,11 @@ class Carousel extends React.Component {
         if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
             if (xDiff > 0) {
                 /* right swipe */
+                window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{ "main":"com.webos.app.home", "sub": "launchpad", "event": "swipe", "extra": { "swipedirection":"right" }}', '');
                 this.increment()
             } else {
                 /* left swipe */
+                window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{ "main":"com.webos.app.home", "sub": "launchpad", "event": "swipe", "extra": { "swipedirection":"left" }}', '');
                 this.decrement()
             }
         }
@@ -79,6 +81,7 @@ class Carousel extends React.Component {
         }
     }
     onPageSelectorHandler = (ev) => {
+        window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', `{ "main":"com.webos.app.home", "sub": "launchpad", "event": "pagination", "extra":{ "pagenumber":"${Number(ev.currentTarget.getAttribute('data-index'))+1}","totalpages":${this.props.children.length} }}`, '');
         this.setState({ slide: parseInt(ev.currentTarget.getAttribute('data-index')) })
     }
     render() {

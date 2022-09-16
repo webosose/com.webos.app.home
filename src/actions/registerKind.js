@@ -173,13 +173,15 @@ export const deleteAllSearchNames = () => (dispatch) => {
     })
 }
 export const addAppName = (id) => (dispatch, getState) => {
-    const value = [...getState().appNames, id];
-    mergeData(APP_BAR_NAMES_PROP, value, () => {
-        dispatch({
-            type: APP_BAR_NAMES,
-            payload: value
+    if (id) {
+        const value = [...getState().appNames, id];
+        mergeData(APP_BAR_NAMES_PROP, value, () => {
+            dispatch({
+                type: APP_BAR_NAMES,
+                payload: value
+            })
         })
-    })
+    }
 }
 export const deleteAppName = (id) => (dispatch, getState) => {
     const value = getState().appNames.filter(v => v !== id);
@@ -189,6 +191,18 @@ export const deleteAppName = (id) => (dispatch, getState) => {
             payload: value
         })
     })
+}
+export const addAppNames = (names) => (dispatch) => {
+    if (names) {
+        const value = [...names];
+        mergeData(APP_BAR_NAMES_PROP, value, () => {
+            dispatch({
+                type: APP_BAR_NAMES,
+                payload: value
+            })
+        })
+    }
+
 }
 export const changeAppBarView = (value) => (dispatch) => {
     mergeData(APP_BAR_SHOW_PROP, value, () => {

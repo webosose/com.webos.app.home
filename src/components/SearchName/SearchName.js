@@ -9,7 +9,7 @@ import css from './SearchName.module.less';
 const SearchName = ({title})=>{
     const dispatch = useDispatch();
     const removeSearchName = useCallback(()=>{
-
+        window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', `{"main":"com.webos.app.home", "sub":"searchbar","event":"searchistory","extra": {"history":"delete","deletedsearchtext": "${title}"}}`, '')
         dispatch(deleteSearchName(title));
     },[dispatch,title])
     const onSearchStringHandler = useCallback(()=>{
@@ -22,7 +22,9 @@ const SearchName = ({title})=>{
     return(
         <div className={css.searchNameCtn}>
             <BodyText size='small' className={css.title} onClick={onSearchStringHandler}>{title}</BodyText>
+            {/* <Icon>closex</Icon> */}
             <Button className={css.closeIconCtnIcon} backgroundOpacity="transparent"
+                css={css}
                 size="small"
                 icon="closex" onClick={removeSearchName} />
         </div>

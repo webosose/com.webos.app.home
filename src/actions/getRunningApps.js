@@ -1,5 +1,6 @@
 import service from '../service';
 import { RUNNING_APPS } from './actionNames';
+const exclude = ["com.webos.app.volume", "com.webos.app.home", "com.webos.app.notification", "bareapp"]
 const getRunningApps = () => (dispatch) => {
     const displayAffinity = JSON.parse(window.PalmSystem.launchParams).displayAffinity;
     service.running({
@@ -8,7 +9,7 @@ const getRunningApps = () => (dispatch) => {
             if (res.returnValue && res.running) {
                 const runningApps = [];
                 res.running.forEach(v => {
-                    if (displayAffinity === v.displayId) {
+                    if (displayAffinity === v.displayId && exclude.indexOf(v.id) <= -1) {
                         runningApps.push(v.id);
                     }
                 });

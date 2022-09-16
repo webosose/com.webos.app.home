@@ -1,0 +1,77 @@
+import React, { Component } from 'react';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+
+import css from './AddedApp.module.less';
+import AppIcon from '../AppIcon/AppIcon';
+// const SortableItem = SortableElement(({value}) => <li>{value}</li>);
+const SortableItem = SortableElement(({ value }) => <AppIcon { ...value } edit = { false} />);
+const SortableList = SortableContainer(({ items, editable }) => {
+    return (
+        <div className= { css.addedApps } >
+        {
+            items.map((value, index) => {
+                return value ? <SortableItem key={ `item-${value.id}` } editable = { editable } index = { index } value = { value } /> : '';
+            }
+                // <Image className={css.imgstyle} src={value.src}></Image>
+                // <li>{value.src}</li>
+                // <AppIcon key={index} src={value.src} />
+            )
+        }
+        < /div>
+    );
+});
+
+class AddedApp extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            apps: props.apps
+        }
+    }
+    static getDerivedStateFromProps(props, state) {
+        if (props.apps.length !== state.apps.length) {
+            return {
+                apps: props.apps
+            }
+        }
+        return null;
+    }
+    onSortEnd = (event) => {
+        const { oldIndex, newIndex } = event;
+        const newAray = [...this.state.apps];
+        const element = newAray.splice(oldIndex, 1)
+
+        if (this.macthedAppBar) {
+            console.log('Update: ', element);
+            this.props.deleteAddAppFromLauchPad(element[0].id);
+        } else {
+            newAray.splice(newIndex, 0, ...element);
+            if (this.props.appNames && this.props.appNames.indexOf(element[0].id) < 0) {
+                this.props.addAppNames(newAray.map(v => v.id))
+            }
+        }
+        this.setState({ apps: newAray });
+    };
+    onSortMove = (event) => {
+        let left = event.touches[0].pageX;
+        let top = event.touches[0].pageY;
+        const addedapps_appbar = document.getElementById('deleteappname_cnt') ? document.getElementById('deleteappname_cnt').getBoundingClientRect() : {};
+        if (!(addedapps_appbar.right < left ||
+            addedapps_appbar.left > left ||
+            addedapps_appbar.bottom < top ||
+            addedapps_appbar.top > top)) {
+            this.macthedAppBar = true;
+            console.log('Match...: ');
+            // this.props.listSortDropHighlight('deleteappname_cnt');
+        } else {
+            this.macthedAppBar = false;
+            // this.props.listSortDropHighlight('');
+        }
+    }
+    render() {
+        console.log("AddedApp ::", this.state.apps)
+        return <SortableList axis={ 'x' } onSortOver = { this.onSortOver } items = { this.state.apps } onSortMove = { this.onSortMove } onSortEnd = { this.onSortEnd } />;
+    }
+}
+
+export default AddedApp;

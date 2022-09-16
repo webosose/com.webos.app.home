@@ -1,0 +1,51 @@
+import { Component } from 'react';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+
+import css from './SortableGrid.module.less';
+import AppIcon from '../AppIcon/AppIcon';
+import { getClientWidth } from '../../util/util';
+// const SortableItem = SortableElement(({value}) => <li>{value}</li>);
+const SortableItem = SortableElement(({ app }) => <AppIcon src={'file:' + app.icon} edit={true} source='launchpad' title={app.title} id={app.id} defaultapp={app.default} removable={app.removable} />);
+const SortableList = SortableContainer(({ items, editable }) => {
+    return (
+        <div className={css.item} style={{ width: getClientWidth() + 'px' }}>
+            {items.map((value, index) => (
+                <SortableItem key={`item-${value.id}`} index={index} app={value} />
+            ))}
+        </div>
+    );
+});
+
+class SortableGrid extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: props.apps,
+        }
+        this.macthedAppBar = false;
+    }
+    onSortEnd = (event) => {
+        const { oldIndex, newIndex } = event;
+        const newAray = [...this.props.apps];
+        const element = newAray.splice(oldIndex, 1)
+        newAray.splice(newIndex, 0, ...element);
+        this.setState(({ items }) => ({
+            items: newAray
+        }));
+        this.props.listSortEnd({ oldIndex: oldIndex + this.props.pageIndex, newIndex: newIndex + this.props.pageIndex });
+    };
+    onSortMove = (event) => {
+        let left = event.touches[0].pageX;
+        let top = event.touches[0].pageY;
+        const addedapps_appbar = document.getElementById('addedapps_appbar').getBoundingClientRect();
+        this.props.listSortDropHighlight('');
+    }
+    onSortStart = (event) => {
+        this.props.listSortStart();
+    }
+    render() {
+        return <SortableList axis={'xy'} transitionDuration={0} pressDelay={50} items={this.state.items} onSortStart={this.onSortStart} onSortMove={this.onSortMove} onSortEnd={this.onSortEnd} />;
+    }
+}
+
+export default SortableGrid;

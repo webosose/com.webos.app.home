@@ -76,7 +76,7 @@ const AppBarSettings = () => {
                         'Hidden'
                     ]}
                 </Group>
-                <p>Aligh Select</p>
+                <p>Align Select</p>
                 <Group
                     childComponent={RadioItem}
                     itemProps={{ inline: true, className: css.inlineGroupItem }}

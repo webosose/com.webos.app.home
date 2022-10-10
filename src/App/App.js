@@ -1,10 +1,8 @@
 import ThemeDecorator from '@enact/sandstone/ThemeDecorator';
-import Button from '@enact/sandstone/Button';
 import Transition from '@enact/ui/Transition';
 import { useCallback, useEffect, useState } from 'react';
 import Footer from '../views/Footer/Footer';
 import css from './App.module.less';
-import Controls from '../views/Controls';
 import { useDispatch } from 'react-redux';
 import getLaunchPoints from '../actions/getLaunchPoints';
 import { useSelector } from 'react-redux';
@@ -12,7 +10,6 @@ import { SHOW_APP } from '../actions/actionNames';
 import getRunningApps from '../actions/getRunningApps';
 import registerKind from '../actions/registerKind';
 import LaunchPad from '../views/LaunchPad/LaunchPad';
-import launchAction from '../actions/launchAction';
 import backgroundImage from './../../assets/app_bg.jpg'
 import launchpadImage from './../../assets/launchpad_bg.jpg'
 
@@ -73,15 +70,12 @@ const App = () => {
 
 	}, [showApp, appRelaunch, dispatch])
 
-	const launchSettings = useCallback(() => {
-		dispatch(launchAction('com.palm.app.settings'));
-	}, [dispatch]);
 	return (
 		<div className={css.app}>
 			<Transition type="fade" visible={shown}>
 				<div className={css.basement} onClick={handleHide} />
 			</Transition>
-			<Transition direction="up" visible={shown}>
+			{/* <Transition direction="up" visible={shown}>
 				<Controls className={css.controls}>
 					<buttons>
 						<Button size="large" backgroundOpacity="opaque" icon="notification" />
@@ -91,7 +85,7 @@ const App = () => {
 						<Button size="large" backgroundOpacity="opaque" icon="gear" onClick={launchSettings} />
 					</buttons>
 				</Controls>
-			</Transition>
+			</Transition> */}
 			<Transition direction="down" visible={shownLaunchPad}>
 				{shownLaunchPad ? <LaunchPad /> : ''}
 			</Transition>

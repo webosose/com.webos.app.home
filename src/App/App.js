@@ -28,6 +28,11 @@ const App = () => {
 			setShownLaunchPad(!shownLaunchPad);
 		}
 	}, [shownLaunchPad])
+	useEffect(()=>{
+		if(!shown){
+			setShownLaunchPad(false);
+		}
+	},[shown])
 	const handleHide = useCallback(() => {
 		if (!shownLaunchPad) {
 			dispatch({
@@ -54,6 +59,7 @@ const App = () => {
 
 	}, [dispatch])
 	const appRelaunch = useCallback(() => {
+		document.body.className = css.app_bg;
 		dispatch({
 			type: SHOW_APP,
 			payload: true
@@ -69,7 +75,6 @@ const App = () => {
 		dispatch(registerKind());
 
 	}, [showApp, appRelaunch, dispatch])
-
 	return (
 		<div className={css.app}>
 			<Transition type="fade" visible={shown}>

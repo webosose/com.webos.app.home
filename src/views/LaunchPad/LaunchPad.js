@@ -26,7 +26,7 @@ const LaunchPad = () => {
         if (filter.enabled) {
             arr = filter.value ? appList.filter((v) => {
                 const title = v.title || v.id;
-                return title.toLowerCase().indexOf(filter.value) > -1;
+                return title.toLowerCase().startsWith(filter.value.toLowerCase());
             }) : [];
         }
         const chunkSize = 12;

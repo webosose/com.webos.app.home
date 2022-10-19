@@ -91,9 +91,9 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable 
         }
     }, [dispatch, id, closeMenu, title]);
     const renderItmes = useCallback(() => {
-        let item = <div className={css.switchItemcontainer}>
+        let item = <div className={css.switchItemcontainer_delete}>
             <Switch className={css.radio} onToggle={deleteAppHandler} />
-            <p className={css.label}>Delete(App Bar)</p>
+            <p className={css.label}>Delete from App Bar</p>
         </div>
         if (source === 'launchpad') {
             // if (appNames.length >= 8 && appNames.indexOf(id) <= -1) {

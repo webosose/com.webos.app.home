@@ -12,6 +12,7 @@ import registerKind from '../actions/registerKind';
 import LaunchPad from '../views/LaunchPad/LaunchPad';
 import backgroundImage from './../../assets/app_bg.jpg'
 import launchpadImage from './../../assets/launchpad_bg.jpg'
+import ilib from 'ilib';
 
 const App = () => {
 	const [shownLaunchPad, setShownLaunchPad] = useState(false);
@@ -28,11 +29,11 @@ const App = () => {
 			setShownLaunchPad(!shownLaunchPad);
 		}
 	}, [shownLaunchPad])
-	useEffect(()=>{
-		if(!shown){
+	useEffect(() => {
+		if (!shown) {
 			setShownLaunchPad(false);
 		}
-	},[shown])
+	}, [shown])
 	const handleHide = useCallback(() => {
 		if (!shownLaunchPad) {
 			dispatch({
@@ -74,6 +75,18 @@ const App = () => {
 		dispatch(getRunningApps());
 		dispatch(registerKind());
 
+		document.addEventListener('webOSLocaleChange', () => {
+			console.log("LISTENED TO webOSLocaleChange EVENT ====>")
+			if (typeof window !== 'undefined' && window.localStorage) {
+				let _locale = window.localStorage.getItem("_locale");
+				if (_locale !== ilib.getLocale()) {
+					window.localStorage.setItem("_locale", ilib.getLocale());
+					window.location.reload();
+				} else {
+					window.localStorage.setItem("_locale", ilib.getLocale());
+				}
+			}
+		});
 	}, [showApp, appRelaunch, dispatch])
 	return (
 		<div className={css.app}>

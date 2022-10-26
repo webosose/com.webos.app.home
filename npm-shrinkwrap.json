@@ -15,7 +15,7 @@
 				"@enact/spotlight": "^4.5.0",
 				"@enact/ui": "^4.5.0",
 				"@enact/webos": "^4.5.0",
-				"ilib": "^14.4.0",
+				"ilib": "^14.15.1",
 				"prop-types": "^15.6.2",
 				"react": "^18.0.0",
 				"react-dom": "^18.0.0",
@@ -224,9 +224,9 @@
 			"integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
 		},
 		"node_modules/ilib": {
-			"version": "14.14.0",
-			"resolved": "https://registry.npmjs.org/ilib/-/ilib-14.14.0.tgz",
-			"integrity": "sha512-QuhH6qwJYq8c368+px4KA3KXfWfRC8XDt/zGNdwOz5C19ZOkPaxIh9LRr1RmzHEPJsd0mKj/JGV3pnzx1xXljg=="
+			"version": "14.15.1",
+			"resolved": "https://registry.npmjs.org/ilib/-/ilib-14.15.1.tgz",
+			"integrity": "sha512-/ePmqu9mWnx6eUYtvxxcLuWcElvsG7AG3pU/SPIGtLyE+5HUXV/f/XzQGloxtLbYbGfdUmNMIKnxEG2BdsYzuA=="
 		},
 		"node_modules/invariant": {
 			"version": "2.2.4",
@@ -608,9 +608,9 @@
 			}
 		},
 		"ilib": {
-			"version": "14.14.0",
-			"resolved": "https://registry.npmjs.org/ilib/-/ilib-14.14.0.tgz",
-			"integrity": "sha512-QuhH6qwJYq8c368+px4KA3KXfWfRC8XDt/zGNdwOz5C19ZOkPaxIh9LRr1RmzHEPJsd0mKj/JGV3pnzx1xXljg=="
+			"version": "14.15.1",
+			"resolved": "https://registry.npmjs.org/ilib/-/ilib-14.15.1.tgz",
+			"integrity": "sha512-/ePmqu9mWnx6eUYtvxxcLuWcElvsG7AG3pU/SPIGtLyE+5HUXV/f/XzQGloxtLbYbGfdUmNMIKnxEG2BdsYzuA=="
 		},
 		"invariant": {
 			"version": "2.2.4",

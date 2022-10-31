@@ -12,10 +12,10 @@ import registerKind from '../actions/registerKind';
 import LaunchPad from '../views/LaunchPad/LaunchPad';
 import backgroundImage from './../../assets/app_bg.jpg'
 import launchpadImage from './../../assets/launchpad_bg.jpg'
-import ilib from 'ilib';
 
 const App = () => {
 	const [shownLaunchPad, setShownLaunchPad] = useState(false);
+	const [curreentLanguage, setCurreentLanguage] = useState("");
 	const dispatch = useDispatch();
 	const shown = useSelector(state => state.appState);
 	const launchPadHandler = useCallback(() => {
@@ -25,7 +25,6 @@ const App = () => {
 			} else {
 				document.body.className = css.app_bg
 			}
-			window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{ "main":"com.webos.app.home", "sub": "launchpad", "event": "click",  "extra": { "clickeditem":"launchpad" } }', '');
 			setShownLaunchPad(!shownLaunchPad);
 		}
 	}, [shownLaunchPad])
@@ -70,6 +69,7 @@ const App = () => {
 		if (typeof window !== 'undefined') {
 			document.addEventListener('keyup', showApp);
 			document.addEventListener('webOSRelaunch', appRelaunch);
+			setCurreentLanguage(window.navigator.language);
 		}
 		dispatch(getLaunchPoints());
 		dispatch(getRunningApps());
@@ -77,16 +77,20 @@ const App = () => {
 
 		document.addEventListener('webOSLocaleChange', () => {
 			console.log("LISTENED TO webOSLocaleChange EVENT ====>")
-			if (typeof window !== 'undefined' && window.localStorage) {
-				let _locale = window.localStorage.getItem("_locale");
-				if (_locale !== ilib.getLocale()) {
-					window.localStorage.setItem("_locale", ilib.getLocale());
+			// window.location.reload();
+			if (typeof window !== 'undefined' && window.navigator) {
+				// _locale = curreentLanguage
+				console.log("curreentLanguage is (inside) ===> ", curreentLanguage)
+
+				if (curreentLanguage !== window.navigator.language) {
+					console.log("inside IF CONDITION window.navigator.language =======> ", window.navigator.language)
 					window.location.reload();
 				} else {
-					window.localStorage.setItem("_locale", ilib.getLocale());
+					console.log("inside ELSE CONDITION window.navigator.language =======> ",window.navigator.language)
 				}
 			}
 		});
+
 	}, [showApp, appRelaunch, dispatch])
 	return (
 		<div className={css.app}>

@@ -25,16 +25,30 @@ const IconButton = kind({
         return <div  {...props} className={source === 'launchpad' ? css.icon_cnt : css.icon_cnt_s}>
             <Image src={props.src} onClick={onClick} className={source === 'launchpad' ? css.icon : css.icon_small} />
             {source === 'launchpad' ? <p className={css.title}>{props.title}</p> : ''}
-            {edit && !defaultapp ? <span className={source === 'launchpad' ? css.edit : css.edit+" "+css.edit_s} onClick={onClick}>-</span> : ''}
+            {renderIcon(props)}
+            {/* {edit && !defaultapp ? <span className={source === 'launchpad' ? css.edit : css.edit + " " + css.edit_s} onClick={onClick}>+</span> : ''} */}
             {source !== 'launchpad' && runningapps.indexOf(id) > -1 ? <span className={css.running} /> : ''}
         </div>
 
     }
 });
 
+const renderIcon = (props) => {
+    const { source, runningapps, id, edit, onClick, defaultapp, newlyAdded } = props;
+    if (edit && source === 'launchpad') {
+        return !defaultapp ? <span className={css.edit} onClick={onClick}>+</span> : ''
+    } else if (edit && source !== 'launchpad') {
+        if (newlyAdded) {
+            return !defaultapp ? <span className={css.edit + " " + css.edit_s} onClick={onClick}>-</span> : ''
+        } else {
+            return !defaultapp ? <span className={css.edit + " " + css.edit_s} onClick={onClick}>+</span> : ''
+        }
+    }
+}
+
 const MenuPopupButton = ContextualPopupDecorator(IconButton);
 
-const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable }) => {
+const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,newlyAdded }) => {
     const [isOpened, setIsOpened] = useState(false);
     const runningApps = useSelector(state => state.runningApps);
     const dispatch = useDispatch();
@@ -142,7 +156,7 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable 
         if (edit && !defaultapp) {
             setIsOpened(true)
         } else {
-            if(source === "launchpad"){
+            if (source === "launchpad") {
                 window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', `{ "main":"com.webos.app.home", "sub": "launchpad", "event": "click", "extra": { "clickeditem":"${id}" }}`, '');
             } else {
                 window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', `{ "main":"com.webos.app.home", "sub": "appbar", "event": "click", "extra": { "clickeditem":"${id}" }}`, '');
@@ -150,7 +164,7 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable 
             dispatch(launchAction(id));
         }
 
-    }, [edit, dispatch, id, defaultapp,source]);
+    }, [edit, dispatch, id, defaultapp, source]);
     return (
         <MenuPopupButton
             onClick={clickMenu}
@@ -168,6 +182,7 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable 
             noAutoDismiss={false}
             size="samll"
             popupClassName={css.test}
+            newlyAdded={newlyAdded}
         />
     );
 }

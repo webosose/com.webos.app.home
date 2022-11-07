@@ -7,7 +7,7 @@ const AddedApps = ({ apps }) => {
     return (<div className={css.addedApps}>
         {
             apps.map((value, index) => {
-                return value ? <AppIcon {...value} edit={appBarEdit} key={index} /> : '';
+                return value ? <AppIcon {...value} edit={appBarEdit} key={index} newlyAdded={true}/> : '';
             }
             )}
     </div>)

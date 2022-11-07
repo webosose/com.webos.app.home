@@ -25,6 +25,7 @@ const App = () => {
 			} else {
 				document.body.className = css.app_bg
 			}
+			window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{ "main":"com.webos.app.home", "sub": "launchpad", "event": "click",  "extra": { "clickeditem":"launchpad" } }', '');
 			setShownLaunchPad(!shownLaunchPad);
 		}
 	}, [shownLaunchPad])
@@ -86,7 +87,7 @@ const App = () => {
 					console.log("inside IF CONDITION window.navigator.language =======> ", window.navigator.language)
 					window.location.reload();
 				} else {
-					console.log("inside ELSE CONDITION window.navigator.language =======> ",window.navigator.language)
+					console.log("inside ELSE CONDITION window.navigator.language =======> ", window.navigator.language)
 				}
 			}
 		});

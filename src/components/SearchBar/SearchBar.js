@@ -61,7 +61,7 @@ const SearchBar = ({ onFilter }) => {
         <>
             <InputField className={css.input_cnt}
                 value={inputValue}
-                onKeyPress={onKeyPressHandler}
+                onKeyDown={onKeyPressHandler}
                 onChange={onChangeHandler}
                 css={css}
                 onBlur={onBlurHandler}

@@ -3,7 +3,6 @@ import {createRoot, hydrateRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
 import App from './App';
 import configureStore from './store';
-console.log('Enact upgrade..');
 const store = configureStore();
 const appElement = (<Provider store={store}><App /></Provider>);
 

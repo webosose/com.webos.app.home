@@ -66,13 +66,17 @@ const LaunchPad = () => {
     }, [dispatch]);
     /*Long press */
     let longpress = 500;
-    const mouseDownHandler = useCallback(() => {
-        longPressEvent = false;
-        delay = setTimeout(() => {
-            //addEdit();
-            dispatch({ type: SET_LAUNCHPAD_EDIT })
-            longPressEvent = true;
-        }, longpress);
+    const mouseDownHandler = useCallback((event) => {
+        if (event.touches.length === 1) {
+            longPressEvent = false;
+            delay = setTimeout(() => {
+                //addEdit();
+                dispatch({ type: SET_LAUNCHPAD_EDIT })
+                longPressEvent = true;
+            }, longpress);
+        } else if (event.touches.length > 1) {
+            clearTimeout(delay);
+        }
     }, [dispatch, longpress])
     const mouseUpHandler = useCallback(() => {
         console.log('mouseUpHandler..')

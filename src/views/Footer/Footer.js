@@ -10,9 +10,10 @@ import Button from '@enact/sandstone/Button';
 import Heading from '@enact/sandstone/Heading';
 import BodyText from '@enact/sandstone/BodyText';
 import Scroller from '@enact/sandstone/Scroller';
-import { CLEAR_APPBAR_EDIT, HIDE_ALERT, SET_APPBAR_EDIT } from '../../actions/actionNames';
+import { CLEAR_APPBAR_EDIT, HIDE_ALERT, HIDE_FEEDBACK, SET_APPBAR_EDIT } from '../../actions/actionNames';
 import deleteApp from '../../actions/deleteApp';
 import AddedApps from '../../components/AddedApps/AddedApps';
+import Feedback from '../../components/Feedback/Feedback';
 
 let delay;
 let longPressEvent = false;
@@ -23,12 +24,14 @@ const Footer = ({ onLaunchPadHandler }) => {
     const runningAppsNames = useSelector(state => state.runningApps);
     const appBarAlign = useSelector(state => state.appBarAlign);
     const appAlert = useSelector(state => state.appAlert);
-    const showEdit = useSelector(state=>state.editStatus.appBar);
-
+    const appFeedback = useSelector(state => state.appFeedback);
+    const showEdit = useSelector(state => state.editStatus.appBar);
+    const appBarEdit = useSelector(state => state.editStatus.appBar);
     //apps
     const [defaultApps, setDefaultApps] = useState([]);
     const [addedApps, setAddedApps] = useState([]);
     const [runningApps, setRunningApps] = useState([]);
+    const [keyBoardShowing, setKeyBoardShowing] = useState(false);
 
 
     const dispatch = useDispatch();
@@ -38,14 +41,29 @@ const Footer = ({ onLaunchPadHandler }) => {
             dispatch({ type: CLEAR_APPBAR_EDIT })
         }
     }, [dispatch]);
+    useEffect(() => {
+        document.addEventListener('keyboardStateChange', (event) => {
+            if (event.visibility) {
+                setKeyBoardShowing(event.visibility);
+            } else {
+                setTimeout(() => {
+                    setKeyBoardShowing(event.visibility);
+                }, 100)
+            }
 
+        });
+    }, [])
     let longpress = 500;
-    const mouseDownHandler = useCallback(() => {
-        longPressEvent = false;
-        delay = setTimeout(() => {
-            dispatch({ type: SET_APPBAR_EDIT })
-            longPressEvent = true;
-        }, longpress);
+    const mouseDownHandler = useCallback((event) => {
+        if (event.touches.length === 1) {
+            longPressEvent = false;
+            delay = setTimeout(() => {
+                dispatch({ type: SET_APPBAR_EDIT })
+                longPressEvent = true;
+            }, longpress);
+        } else if (event.touches.length > 1) {
+            clearTimeout(delay);
+        }
     }, [dispatch, longpress])
     const mouseUpHandler = useCallback(() => {
         clearTimeout(delay);
@@ -62,6 +80,16 @@ const Footer = ({ onLaunchPadHandler }) => {
         }));
         dispatch(deleteApp(appAlert.id))
     }, [dispatch, appAlert]);
+
+    const onCloseFeedbackPage = useCallback(() => {
+        if (!keyBoardShowing) {
+            dispatch({
+                type: HIDE_FEEDBACK
+            });
+        }
+
+    }, [dispatch, keyBoardShowing])
+
     useEffect(() => {
         let timer = 0;
         if (appAlert.autoClose) {
@@ -82,7 +110,9 @@ const Footer = ({ onLaunchPadHandler }) => {
                 _defaultApps.push({
                     src: 'file:' + v.icon,
                     id: v.id,
-                    running: v.running
+                    title: v.title,
+                    running: runningAppsNames.indexOf(v.id) > -1,
+                    defaultapp: true
                 });
             }
         })
@@ -90,7 +120,7 @@ const Footer = ({ onLaunchPadHandler }) => {
             return _defaultApps.find(element => element.id === value);
         })
         setDefaultApps(appBarAlign === 'left' ? apps : apps.reverse());
-    }, [appList, appBarAlign]);
+    }, [appList, appBarAlign, runningAppsNames]);
     useEffect(() => {
         const _addedApps = [];
         appList.forEach((v) => {
@@ -126,13 +156,16 @@ const Footer = ({ onLaunchPadHandler }) => {
         setRunningApps(appBarAlign === 'left' ? _runningApps : _runningApps.reverse());
 
     }, [appList, appBarAlign, appNames, runningAppsNames, showEdit]);
-    const datacollectionHandler = useCallback(()=>{
+    const onScrollStart = useCallback(() => {
+        clearTimeout(delay);
+    }, [])
+    const datacollectionHandler = useCallback(() => {
         window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', '{ "main":"com.webos.app.home", "sub": "appbar", "event": "click", "extra": { "clickeditem":"appBarSettings" }}', '');
-    },[])
+    }, [])
     const settingsIcon = appBarAlign === 'left' ? css.setting_icon : css.setting_icon_right;
     const footerCnt = appBarAlign === 'left' ? css.footer_ctn : css.footer_ctn + " " + css.footer_ctn_right;
     const footerscrooler = appBarAlign === 'left' ? css.footerscrooler : css.footerscrooler_right;
-
+    // console.log("appFeedback ::", appFeedback)
     return (
         <div className={footerCnt}
             onTouchStart={mouseDownHandler}
@@ -142,19 +175,19 @@ const Footer = ({ onLaunchPadHandler }) => {
                 <Image src={launchpad} className={css.icon} onClick={onLaunchPadHandler} />
             </div>
             <div className={css.defaultApps}>
-                {defaultApps.map((v, index) => <AppIcon key={index} {...v} />)}
+                {defaultApps.map((v, index) => <AppIcon key={index} {...v} edit={appBarEdit} />)}
             </div>
             <AddedApps apps={addedApps} />
             <div key={appList.length + 1} className={css.divider}>|</div>
 
             <div className={css.footerscrooler_cnt}>
-                <Scroller direction='horizontal'>
+                <Scroller direction='horizontal' onScrollStart={onScrollStart}>
                     <div className={footerscrooler}>
                         {runningApps.map((v, index) => <AppIcon key={index} {...v} />)}
                     </div>
                 </Scroller>
             </div>
-            <div className={settingsIcon}  onClick={datacollectionHandler}>
+            <div className={settingsIcon} onClick={datacollectionHandler}>
                 <div key={appList.length + 1} className={css.divider}>|</div>
                 <AppBarSettings />
             </div>
@@ -169,6 +202,9 @@ const Footer = ({ onLaunchPadHandler }) => {
                 {appAlert.showButtons ? <><Button onClick={noHandler}>No</Button>
                     <Button onClick={yesHandler}>Yes</Button></> : ''}
 
+            </Popup>
+            <Popup open={appFeedback.show} onClose={onCloseFeedbackPage} noAnimation position='top' className={css.popup_ct}>
+                <Feedback appName={appFeedback.title} appId={appFeedback.id} />
             </Popup>
         </div>
     )

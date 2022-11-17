@@ -32,3 +32,8 @@ export const CLEAR_LAUNCHPAD_EDIT = 'CLEAR_LAUNCHPAD_EDIT';
 export const SET_APPBAR_EDIT = 'SET_APPBAR_EDIT';
 export const CLEAR_APPBAR_EDIT = 'CLEAR_APPBAR_EDIT';
 export const CLEAR_EDIT = 'CLEAR_EDIT';
+
+//Feedback
+export const SHOW_FEEDBACK = 'SHOW_FEEDBACK';
+export const HIDE_FEEDBACK = 'HIDE_FEEDBACK';
+

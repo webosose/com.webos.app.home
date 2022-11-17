@@ -5,6 +5,7 @@ const getLaunchPoints = () => (dispatch) => {
     service.listLaunchPoints({
         subscribe: true,
         onSuccess: (res) => {
+            // console.log("res.launchPoint:: ",res)
             if (res.launchPoints) {
                 const launchPoints = res.launchPoints.map(v => {
                     if (DEFAULT_APPS_IDS.indexOf(v.id) > -1) {

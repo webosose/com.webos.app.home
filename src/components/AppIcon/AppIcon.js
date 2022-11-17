@@ -14,13 +14,29 @@ import Image from '@enact/sandstone/Image';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAppName, deleteAppName } from '../../actions/registerKind';
 import launchAction from '../../actions/launchAction';
-import { DELETE_APP, MAX_APPADD_LIMIT, SHOW_ALERT } from '../../actions/actionNames';
+import { CLEAR_APPBAR_EDIT, DELETE_APP, MAX_APPADD_LIMIT, SHOW_ALERT, SHOW_FEEDBACK } from '../../actions/actionNames';
 import closeAppAction from '../../actions/closeAppAction';
 import Scrim from '../Scrim/Scrim';
+
+const renderIcon = (props) => {
+    const { source, runningapps, id, edit, onClick, defaultapp, newlyAdded } = props;
+    if (edit && source === 'launchpad') {
+        return !defaultapp ? <span className={css.edit} onClick={onClick}>+</span> : ''
+    } else if (edit && source !== 'launchpad') {
+        if(defaultapp && runningapps.indexOf(id) > -1){
+            return <span className={css.edit + " " + css.edit_s} onClick={onClick}>-</span>
+        }else if (newlyAdded) {
+            return !defaultapp ? <span className={css.edit + " " + css.edit_s} onClick={onClick}>-</span> : ''
+        } else {
+            return !defaultapp  ? <span className={css.edit + " " + css.edit_s} onClick={onClick}>+</span> : ''
+        }
+    }
+}
+
 const IconButton = kind({
     name: 'AppIcon',
     render: (props) => {
-        const { source, runningapps, id, edit, onClick, defaultapp } = props;
+        const { source, runningapps, id, onClick } = props;
         // delete props.onClick
         return <div  {...props} className={source === 'launchpad' ? css.icon_cnt : css.icon_cnt_s}>
             <Image src={props.src} onClick={onClick} className={source === 'launchpad' ? css.icon : css.icon_small} />
@@ -33,22 +49,11 @@ const IconButton = kind({
     }
 });
 
-const renderIcon = (props) => {
-    const { source, runningapps, id, edit, onClick, defaultapp, newlyAdded } = props;
-    if (edit && source === 'launchpad') {
-        return !defaultapp ? <span className={css.edit} onClick={onClick}>+</span> : ''
-    } else if (edit && source !== 'launchpad') {
-        if (newlyAdded) {
-            return !defaultapp ? <span className={css.edit + " " + css.edit_s} onClick={onClick}>-</span> : ''
-        } else {
-            return !defaultapp ? <span className={css.edit + " " + css.edit_s} onClick={onClick}>+</span> : ''
-        }
-    }
-}
+
 
 const MenuPopupButton = ContextualPopupDecorator(IconButton);
 
-const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,newlyAdded }) => {
+const AppIcon = ({ src, title, edit, id, source, defaultapp, removable,newlyAdded }) => {
     const [isOpened, setIsOpened] = useState(false);
     const runningApps = useSelector(state => state.runningApps);
     const dispatch = useDispatch();
@@ -87,8 +92,14 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,
         }
     }, [dispatch, closeMenu, id, appNames]);
     const closeApp = useCallback(() => {
-        dispatch(closeAppAction(id));
-    }, [dispatch, id])
+        closeMenu()
+        dispatch(closeAppAction(id,()=>{
+            dispatch(({
+                type: SHOW_FEEDBACK,
+                payload: {title, id,show:true}
+            }));
+        }));
+    }, [dispatch, id,closeMenu,title])
     const deleteApp = useCallback((value) => {
         if (value.selected) {
             closeMenu();
@@ -109,6 +120,7 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,
             <Switch className={css.radio} onToggle={deleteAppHandler} />
             <p className={css.label}>Delete from App Bar</p>
         </div>
+        // console.log(defaultapp+"    "+running+"  "+defaultapp);
         if (source === 'launchpad') {
             // if (appNames.length >= 8 && appNames.indexOf(id) <= -1) {
             //     item = <div className={css.switchItemcontainer}>
@@ -121,14 +133,16 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,
                     <p className={css.label}>Add to App Bar</p>
                 </div>
             }
-        } else if (running) {
+        }else if(defaultapp){
+            item = '';
+        }else if(runningApps.indexOf(id) > -1 && appNames.indexOf(id) < 0 ){
             item = <div className={css.switchItemcontainer}>
-                <Switch className={css.radio} onToggle={addAppHandler} />
-                <p className={css.label}>Add to App Bar</p>
-            </div>
+                    <Switch className={css.radio} onToggle={addAppHandler} />
+                    <p className={css.label}>Add to App Bar</p>
+                </div>
         }
         return item;
-    }, [appNames, addAppHandler, deleteAppHandler, id, running, source])
+    }, [appNames, addAppHandler, deleteAppHandler, id, source,defaultapp,runningApps])
     const renderPopup = useCallback(() => (
         <div onClick={menuClick}>
             <div className={css.menuContainer} >
@@ -143,17 +157,17 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,
                     <Switch className={css.radio} onToggle={deleteApp} />
                     <p className={css.label}>Delete App</p>
                 </div> : ''}
-                {running ? <div className={css.switchItemcontainer}>
+                {runningApps.indexOf(id) > -1 ? <div className={css.switchItemcontainer}>
                     <Switch className={css.radio} onToggle={closeApp} />
                     <p className={css.label}>Close App</p>
                 </div> : ''}
             </div>
             <Scrim closeMenu={closeMenu} />
         </div>
-    ), [deleteApp, closeApp, menuClick, removable, renderItmes, title, closeMenu, running]);
+    ), [deleteApp, closeApp, menuClick, removable, renderItmes, title, closeMenu, runningApps,id]);
     const clickMenu = useCallback((event) => {
         event.stopPropagation()
-        if (edit && !defaultapp) {
+        if (edit && (!defaultapp || runningApps.indexOf(id) > -1)) {
             setIsOpened(true)
         } else {
             if (source === "launchpad") {
@@ -162,9 +176,10 @@ const AppIcon = ({ src, title, edit, id, source, running, defaultapp, removable,
                 window.PalmSystem.PmLogString(6, 'DATA_COLLECTION', `{ "main":"com.webos.app.home", "sub": "appbar", "event": "click", "extra": { "clickeditem":"${id}" }}`, '');
             }
             dispatch(launchAction(id));
+            dispatch({ type: CLEAR_APPBAR_EDIT })
         }
 
-    }, [edit, dispatch, id, defaultapp, source]);
+    }, [edit, dispatch, id, defaultapp, source,runningApps]);
     return (
         <MenuPopupButton
             onClick={clickMenu}

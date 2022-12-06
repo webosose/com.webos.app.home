@@ -92,7 +92,7 @@ const App = () => {
 			}
 		});
 
-	}, [showApp, appRelaunch,curreentLanguage, dispatch])
+	}, [showApp, appRelaunch, dispatch])
 	return (
 		<div className={css.app}>
 			<Transition type="fade" visible={shown}>

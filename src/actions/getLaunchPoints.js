@@ -2,6 +2,7 @@ import service from '../service';
 import { ADD_LAUNCH_POINT, GET_LAUNCH_POINTS, REMOVE_LAUNCH_POINT } from './actionNames';
 const DEFAULT_APPS_IDS = ['com.webos.app.videocall', 'com.webos.app.enactbrowser', 'com.palm.app.settings']
 const getLaunchPoints = () => (dispatch) => {
+    console.log("getLaunchPoints API is called========>")
     service.listLaunchPoints({
         subscribe: true,
         onSuccess: (res) => {

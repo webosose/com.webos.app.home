@@ -1,6 +1,7 @@
 import service from '../service';
 import { RUNNING_APPS } from './actionNames';
 const exclude = ["com.webos.app.volume", "com.webos.app.home", "com.webos.app.notification", "bareapp"]
+let timer;
 const getRunningApps = () => (dispatch) => {
     const displayAffinity = JSON.parse(window.PalmSystem.launchParams).displayAffinity;
     service.running({
@@ -20,8 +21,12 @@ const getRunningApps = () => (dispatch) => {
             }
 
         },
-        onFailure: () => {
-
+        onFailure: (error) => {
+            console.log("getRunningApps: Error ",error);
+            clearTimeout(timer);
+            timer = setTimeout(()=>{
+                dispatch(getRunningApps());
+            },3000);
         }
     });
 }

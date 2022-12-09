@@ -65,17 +65,18 @@ const App = () => {
 			type: SHOW_APP,
 			payload: true
 		});
-	}, [dispatch])
+	}, [dispatch]);
+	useEffect(()=>{
+		dispatch(getLaunchPoints());
+		dispatch(getRunningApps());
+		dispatch(registerKind());
+	},[dispatch]);
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			document.addEventListener('keyup', showApp);
 			document.addEventListener('webOSRelaunch', appRelaunch);
 			setCurreentLanguage(window.navigator.language);
-		}
-		dispatch(getLaunchPoints());
-		dispatch(getRunningApps());
-		dispatch(registerKind());
-
+		}		
 		document.addEventListener('webOSLocaleChange', () => {
 			console.log("LISTENED TO webOSLocaleChange EVENT ====>")
 			// window.location.reload();

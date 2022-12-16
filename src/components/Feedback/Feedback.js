@@ -8,6 +8,7 @@ import star_none from '../../../assets/star_none.png';
 import { HIDE_FEEDBACK } from "../../actions/actionNames";
 import css from './Feedback.module.less';
 
+const MAX_FFEDBACK_LETTERS = 200
 const Feedback = ({ appName, appId }) => {
     const [rate, setRate] = useState(0);
     const [feedbackText, setFeedbackTest] = useState('');
@@ -53,7 +54,8 @@ const Feedback = ({ appName, appId }) => {
 
         <div className={css.secondbox}>
             <BodyText>What would you like to share with us?(option)</BodyText>
-            <textarea value={feedbackText} onChange={handleChange}/>
+             <textarea value={feedbackText} onChange={handleChange} maxLength={MAX_FFEDBACK_LETTERS} />
+            <span className={css.feedbackRemainingChars}>{`${MAX_FFEDBACK_LETTERS - feedbackText.length} characters left`}</span>
         </div>
         <Button onClick={submitFeedback} disabled={!rate}>Submit</Button>
     </div>)

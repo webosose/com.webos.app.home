@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import ThemeDecorator from '@enact/sandstone/ThemeDecorator';
 import Transition from '@enact/ui/Transition';
 import { useCallback, useEffect, useState } from 'react';
@@ -66,17 +67,17 @@ const App = () => {
 			payload: true
 		});
 	}, [dispatch]);
-	useEffect(()=>{
+	useEffect(() => {
 		dispatch(getLaunchPoints());
 		dispatch(getRunningApps());
 		dispatch(registerKind());
-	},[dispatch]);
+	}, [dispatch]);
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			document.addEventListener('keyup', showApp);
 			document.addEventListener('webOSRelaunch', appRelaunch);
 			setCurreentLanguage(window.navigator.language);
-		}		
+		}
 		document.addEventListener('webOSLocaleChange', () => {
 			console.log("LISTENED TO webOSLocaleChange EVENT ====>")
 			// window.location.reload();

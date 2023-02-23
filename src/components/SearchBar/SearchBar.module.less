@@ -11,7 +11,9 @@ input::-webkit-input-placeholder {
 		margin:0;
 		background: rgba(255, 255, 255, 0.9);
 		border-radius: 0.5rem 0 0 0.5rem;
-
+		:global(.enact-locale-right-to-left) & {
+			border-radius: 0 0.5rem 0.5rem 0;
+		}
 		.input {
 			border-bottom: 0;
 			// padding: 0 120px 0 0;
@@ -46,6 +48,9 @@ input::-webkit-input-placeholder {
 	background: rgba(255, 255, 255, 0.9);
 	border-radius: 0 0.5rem 0.5rem 0;
 	color: #000;
+	:global(.enact-locale-right-to-left) & {
+		border-radius: 0.5rem 0 0 0.5rem;
+	}
 }
 
 .clearIcon {

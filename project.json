@@ -12,14 +12,21 @@
      },
     "plugins": [
          "ilib-loctool-webos-javascript",
-         "ilib-loctool-webos-appinfo-json"
+         "ilib-loctool-webos-json"
      ],
      "excludes": [
-         ".*",
-         "*"
+         ".*"
      ],
-     "includes": [
-         "src",
-         "webos-meta"
-     ]
+    "settings": {
+        "jsonMap": {
+            "mappings": {
+                "**/appinfo.json": {
+                    "template": "[dir]/[resourceDir]/[localeDir]/[filename]"
+                }
+            }
+        },
+        "javascript": {
+            "disablePseudo": true
+        }
+    }
 }
